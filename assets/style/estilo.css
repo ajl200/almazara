@@ -1,0 +1,81 @@
+/* ESTILOS DEL MENU DE ADMINISTRACIÓN */
+.thumbnail_mapa{
+    
+    max-width: 50% !important;
+    transform: none !important;
+}
+
+.img-thumbnail, .thumbnail_mapa {
+    background: url('../img/icono/loading.gif') no-repeat  center center;
+}
+
+.box {
+    height: 60px;
+    margin: 10px;
+}
+.alert {
+    padding: 10px !important;
+}
+
+/* ESTILO MENU DE ADMINISTRACION CALLES */
+
+.selected {
+    color: white !important;
+    background-color:#17A2B8 !important;
+}
+
+.mapas {
+    position: absolute !important;
+}
+
+input[type='search'] {
+   width: 100% !important;
+   margin: 0 !important;
+}
+
+#tabla_calles_filter {
+    width: auto !important;
+    float:left !important;
+    margin: 0 !important;
+}
+
+.cb_hidden {
+    display: none;
+}
+
+/* Alineación de los id en la tabla de mapas */
+.ids {
+    text-align:center;
+}
+
+.warning {
+    background-color: orange !important;
+}
+
+.btn {
+    margin-bottom: 30px;
+}
+#table_mapas {
+    
+    height:400px;
+    overflow:auto;
+}
+
+
+.popover {
+   content: attr(data-content);
+   font-size: 1.5em;
+}
+.modal_mensaje_error {
+    display: block;
+    text-align: center !important;
+    margin: 20px;
+
+}
+
+#error {
+    display: block;
+    text-align: center !important;
+    color: red;
+    font-size: 100px !important;
+}
