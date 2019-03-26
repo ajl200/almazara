@@ -2,7 +2,7 @@
 <html lang='es'>
 
 <head>
-    <title>Superposición de Mapas</title>
+    <title>Almazara</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
@@ -16,9 +16,8 @@
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <!-- ESTILOS PROPIOS:-->
-<!-- <link rel="stylesheet" type="text/css" href="<           ?php echo base_url()?>/assets/style/estilo.css" />
-     <link rel="stylesheet" type="text/css" href="<           ?php echo base_url()?>/assets/style/estiloHotspots.css" />
--->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>/assets/style/estilo.css" />
+
     
     <!-- JS PROPIOS: -->
 <!--    <script src=<    ?php echo base_url("assets/js/Mapas.js");?>></script>
@@ -26,7 +25,6 @@
     <script src=<        ?php echo base_url("assets/js/jquery.hotspot.js");?>></script>
 --> 
     <script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
-
 </head>
 
 <body>
@@ -44,17 +42,11 @@
                         else {
                             // Administrador:
                             if ($nivel == 2) {
-                                echo anchor('Maps/index/','Mapas','id="enlace_mapas" class="flex-sm-fill text-sm-center nav-link "');
-                                echo anchor('Hotspots/select_maps/','Puntos de Interés',' id="enlace_hotspots" class="flex-sm-fill text-sm-center nav-link"');
-                                echo anchor('Streets/view_admin_streets/','Calles',' id="enlace_calles" class="flex-sm-fill text-sm-center nav-link"');
                                 echo anchor('Users/view_users/','Admin Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');
                                 echo anchor('Login/logout',' ',' class="flex-sm-fill text-sm-center nav-link fas fa-sign-out-alt fa-2x"');
                             }
                             // Usuario:
                             else if ($nivel == 1) {
-                                echo anchor('Maps/index/','Mapas','id="enlace_mapas" class="flex-sm-fill text-sm-center nav-link "');
-                                echo anchor('Hotspots/select_maps/','Puntos de Interés',' id="enlace_hotspots" class="flex-sm-fill text-sm-center nav-link"');
-                                echo anchor('Streets/view_admin_streets/','Calles',' id="enlace_calles" class="flex-sm-fill text-sm-center nav-link"');
                                 echo anchor('Login/logout',' ','class="flex-sm-fill text-sm-center nav-link fas fa-sign-out-alt fa-2x"');
                             }
                         }
@@ -62,17 +54,11 @@
                     else {
                         // Administrador:
                         if ($nivel == 2) {
-                            echo anchor('Maps/index/','Mapas','id="enlace_mapas" class="flex-sm-fill text-sm-center nav-link "');
-                            echo anchor('Hotspots/select_maps/','Puntos de Interés',' id="enlace_hotspots" class="flex-sm-fill text-sm-center nav-link"');
-                            echo anchor('Streets/view_admin_streets/','Calles',' id="enlace_calles" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Users/view_users/','Admin Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Login/logout',' ',' class="flex-sm-fill text-sm-center nav-link fas fa-sign-out-alt fa-2x"');
                         }
                         // Usuario
                         else if ($nivel == 1) {
-                            echo anchor('Maps/index/','Mapas','id="enlace_mapas" class="flex-sm-fill text-sm-center nav-link "');
-                            echo anchor('Hotspots/select_maps/','Puntos de Interés',' id="enlace_hotspots" class="flex-sm-fill text-sm-center nav-link"');
-                            echo anchor('Streets/view_admin_streets/','Calles',' id="enlace_calles" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Login/logout',' ','class="flex-sm-fill text-sm-center nav-link fas fa-sign-out-alt fa-2x"');
                         }
                     }

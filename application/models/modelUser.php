@@ -13,7 +13,7 @@ class modelUser extends CI_Model{
         }
         
         else {
-            $checkHash = false;
+            $checkHash = true;
         }
         return $checkHash;
     }
@@ -51,9 +51,15 @@ class modelUser extends CI_Model{
     }
     
     public function update($usuario, $contrasena, $nivel, $id) {
-        $query = $this->db->query("UPDATE usuarios SET username = '$usuario', passwd = '$contrasena', nivel = '$nivel' WHERE id = $id;"); 
-        
-        return $this->db->affected_rows();
+        if ($contrasena != ""){
+            $query = $this->db->query("UPDATE usuarios SET username = '$usuario', passwd = '$contrasena', nivel = '$nivel' WHERE id = $id;"); 
+            $affected_rows = $this->db->affected_rows();
+        }else {
+            $query = $this->db->query("UPDATE usuarios SET username = '$usuario', nivel = '$nivel' WHERE id = $id;"); 
+            $affected_rows = $this->db->affected_rows();
+        }
+        var_dump($affected_rows);
+        return $affected_rows;
     }
     
     public function delete($id) {
@@ -71,9 +77,15 @@ class modelUser extends CI_Model{
         
         return $nivel;
     }
-    
+
+
+
     public function hash_pass($pass) {
-        $pass = password_hash($pass, PASSWORD_DEFAULT);
+        if ($pass != ''){
+            $pass = password_hash($pass, PASSWORD_DEFAULT);
+        }
+
+        var_dump($pass);
         return $pass;
     }
     

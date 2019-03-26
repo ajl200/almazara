@@ -1,7 +1,8 @@
     <script>
         $(document).ready(function() {
             $('#enlace_usuarios').toggleClass('active');
-            $("#usuarioIns").on("change", function() {
+            
+            $("#usuarioIns").on("change", function check_username () {
                 var usu = $("#usuarioIns").val();
                 $.ajax({
                     type: "post",
@@ -15,6 +16,38 @@
                         }
                     }
                 })
+            });
+
+            $("#usuarioMod").on("change", function check_username () {
+                var usu = $("#usuarioMod").val();
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url(); ?>index.php/Users/check_user/" + usu,
+                    success: function(r) {
+                        if (r == 0) {
+                            $("#submitUsuMod").prop("disabled", false);
+                        } else {
+                            $("#submitUsuMod").prop("disabled", true);
+                            $("#submitUsuMod").submit(function(e){
+                alert('submit intercepted');
+                e.preventDefault(e);
+            });
+                        }
+                    }
+                })
+            });
+
+            $(document).on("click",'#update_button', function(){
+                var id  = $(this).data('id');
+
+                console.log('id' + id);
+                var username = $('#user_'+id).text();
+                var nivel = $('#nivel_'+id).text();
+                $('#nivelMod').val(nivel);
+                $("#idMod").val(id);
+                $("#usuarioMod").val(username);
+
+                console.log(nivel);
             });
             
             $("#usuarioMod").on("change", function() {
@@ -39,6 +72,7 @@
     <div class="container-fluid">
         <div class='box'>
             <?php
+            
                 if (isset($msg)){
                     switch ($msg) {
                         case 0:
@@ -69,6 +103,8 @@
                             <th scope="col">Usuario</th>
                             <th scope="col">Contraseña</th>
                             <th scope="col">Nivel</th>
+                            <th scope="col">Modificar</th>
+                            <th scope="col">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,11 +114,17 @@
                     $usuario = $ListaUsuarios[$i];
                     echo ("<tr>");
                     echo ("<td class='fila".$usuario["id"]."'>".$usuario["id"]."</td>");
-                    echo ("<td class='fila".$usuario["id"]."'>".$usuario["username"]."</td>");
-                    echo ("<td>*****</td>");
-                    echo ("<td class='fila".$usuario["id"]."'>".$usuario["nivel"]."</td>");
+                    echo ("<td id='user_".$usuario["id"]."' class='fila".$usuario["id"]."'>".$usuario["username"]."</td>");
+                    echo ("<td>*************</td>");
+                    if ($usuario["nivel"] == 2){
+                        echo ("<td class='fila".$usuario["id"]."'> Administrador </td>");
+                    } else {
+                        echo ("<td class='fila".$usuario["id"]."'> Usuario Básico </td>");
+                    }
+                    echo ("<td id='nivel_".$usuario["id"]."'class='d-none fila".$usuario["id"]."'>".$usuario["nivel"]."</td>");
+                    
                     echo ("<td>");
-                            echo anchor("Users/update_user/".$usuario['id'],"<span class='far fa-edit'></span>","class='btn-update btn btn-info' data-toggle='modal' id='update_button' data-target='#modal_mod' data-id='".$usuario['id']."'");
+                            echo anchor("Users/update_user/".$usuario['id'],"<span class='far fa-edit'></span>","  data-id='".$usuario['id']."' class='btn-update btn btn-info' data-toggle='modal' id='update_button' data-target='#modal_mod'");
                     echo ("</td>");  
                     echo ("<td>");
                             echo anchor("Users/delete_user/".$usuario['id'],"<span class='fas fa-trash-alt'></span>","class='btn btn-danger'");
@@ -125,13 +167,12 @@
                                     <label class="input-group-text" for="inputGroupSelect01">Nivel permiso</label>
                                 </div>
                                 <select class="custom-select" id="nivelIns" name="nivelIns">
-                                    <option value="1" selected>Usuario</option>
+                                    <option value="1" selected>Usuario Básico</option>
                                     <option value="2">Administrador</option>
                                 </select>
                             </div>
                         </div>
-                        <br />
-
+                    
                         <div class='modal-footer'>
                             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
                             <input type="submit" name="submit" id="submitUsuIns" value="Insertar Usuario" class="btn btn-primary">
@@ -165,7 +206,7 @@
                         </div>
                         <div class='form-group'>
                             <label for='contrasenaMod'>Contraseña</label>
-                            <input type='text' class='form-control' placeholder='Introduce una contraseña nueva' name='contrasenaMod' id='contrasenaMod' required />
+                            <input type='text' class='form-control' placeholder='Introduce una contraseña nueva' name='contrasenaMod' id='contrasenaMod'/>
                         </div>
                         <div class='form-group'>
                             <label for='nivelMod'>Nivel</label>
@@ -174,12 +215,12 @@
                                     <label class="input-group-text" for="inputGroupSelect01">Nivel permiso</label>
                                 </div>
                                 <select class="custom-select" id="nivelMod" name="nivelMod">
-                                    <option value="1" selected>Usuario</option>
+                                    <option value="1" selected>Usuario Básico</option>
                                     <option value="2">Administrador</option>
                                 </select>
                             </div>
                         </div>
-                        <?php echo "<input type='hidden' id='idMod' name='idMod' value='" .$usuario['id']. "'>"; ?>
+                        <?php echo "<input type='hidden' id='idMod' name='idMod' value=''>"; ?>
                         <br />
 
                         <div class='modal-footer'>

@@ -8,9 +8,6 @@ class Login extends CI_Controller {
     public function index(){
         $this->load->model('modelSecurity');
         $this->load->model('modelUser');
-        $this->load->model('modelPaquetes');
-        $this->load->model('modelMapas');
-        $this->load->model('modelCalles');
         $data["noHeader"] = false;
         $data["viewName"] = "login";
         $this->load->view('template',$data);
@@ -19,9 +16,6 @@ class Login extends CI_Controller {
     public function logout() {
         $this->load->model('modelSecurity');
         $this->load->model('modelUser');
-        $this->load->model('modelPaquetes');
-        $this->load->model('modelMapas');
-        $this->load->model('modelCalles');
         $data["noHeader"] = false;
         $data["viewName"] = "login";
         $this->modelSecurity->destroy_session();
@@ -33,9 +27,6 @@ class Login extends CI_Controller {
     public function checkLogin(){
         $this->load->model('modelSecurity');
         $this->load->model('modelUser');
-        $this->load->model('modelPaquetes');
-        $this->load->model('modelMapas');
-        $this->load->model('modelCalles');
         $name = $this->input->get_post("name");
         $pass = $this->input->get_post("password");
         $r = $this->modelUser->checkLogin($name,$pass);
@@ -50,9 +41,6 @@ class Login extends CI_Controller {
             $id = $this->modelUser->get_id($name);
             $this->modelSecurity->create_session();
             $this->session->set_userdata("id", $id);
-            $data['ListaMapas'] = $this->modelMapas->get_all_ordenados();
-            $data['ListaPaquetes'] = $this->modelPaquetes->get_name();
-            // var_dump($data['ListaPaquetes']);
             $data["viewName"] = "admin_panel";
             $this->load->view('template',$data);
         }
