@@ -1,4 +1,5 @@
 <?php 
+echo password_hash('1', PASSWORD_DEFAULT);
 echo('    
 <div class="container-fluid" id="login"> 
     <div class="row">
