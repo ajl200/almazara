@@ -11,6 +11,8 @@ CREATE TABLE proveedor (
     telf TINYINT(9) UNSIGNED NOT NULL
 );
 
+test 
+
 CREATE TABLE aceituna (
     id INT UNSIGNED PRIMARY KEY,
     variedad VARCHAR(20) NOT NULL
