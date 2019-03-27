@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS almazara;
 CREATE DATABASE almazara;
 USE almazara;
 
-CREATE TABLE proveedor (
+CREATE TABLE proveedores (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL, 
     apellido1 VARCHAR(50) NOT NULL,
@@ -85,4 +85,9 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
         `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
         `data` blob NOT NULL,
         KEY `ci_sessions_timestamp` (`timestamp`)
+);
+
+CREATE TABLE aportacion_tolva (
+    id_aportacion INT UNSIGNED NOT NULL,
+    id_tolva TINYINT UNSIGNED NOT NULL
 );
