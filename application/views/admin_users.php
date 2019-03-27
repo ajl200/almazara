@@ -2,7 +2,21 @@
         $(document).ready(function() {
             $('#enlace_usuarios').toggleClass('active');
             
-            $("#usuarioIns").on("change", function check_username () {
+            $(document).on("click",'#update_button', function(){
+                $("#submitUsuMod").prop("disabled", true);
+                $(".msg").html("");
+                 id  = $(this).data('id');
+                 console.log('id' + id);
+                 username = $('#user_'+id).text();
+                 nivel = $('#nivel_'+id).text();
+                $('#nivelMod').val(nivel);
+                $("#idMod").val(id);
+                $("#usuarioMod").val(username);
+
+                console.log(nivel);
+            });
+
+            $("#usuarioIns").on("change", function () {
                 var usu = $("#usuarioIns").val();
                 $.ajax({
                     type: "post",
@@ -10,60 +24,47 @@
                     success: function(r) {
                         if (r == 0) {
                             $("#submitUsuIns").prop("disabled", false);
+                            $(".msg").html("<p class='success'> Este nombre de usuario es válido. </p>");
                         } else {
-                            
+                            $(".msg").html("<p class='error'> Este nombre de usuario ya existe en la base de datos. </p>");
                             $("#submitUsuIns").prop("disabled", true);
                         }
                     }
                 })
             });
 
-            $("#usuarioMod").on("change", function check_username () {
-                var usu = $("#usuarioMod").val();
+            $("#usuarioMod").on("change", function () {
+                var usu = $(this).val();
                 $.ajax({
                     type: "post",
                     url: "<?php echo base_url(); ?>index.php/Users/check_user/" + usu,
                     success: function(r) {
                         if (r == 0) {
                             $("#submitUsuMod").prop("disabled", false);
+                            $(".msg").html("<p class='success'> Este nombre de usuario es válido. </p>");
+
                         } else {
+                        
+                            if (usu == username){
+                            $(".msg").html("");
+                            } else {
+                            console.log('llega');
+                            $(".msg").html("<p class='error'> Este nombre de usuario ya existe en la base de datos. </p>");
                             $("#submitUsuMod").prop("disabled", true);
-                            $("#submitUsuMod").submit(function(e){
-                alert('submit intercepted');
-                e.preventDefault(e);
-            });
+                            }
+                            
                         }
                     }
                 })
             });
 
-            $(document).on("click",'#update_button', function(){
-                var id  = $(this).data('id');
+            function enable () {
+                $("#submitUsuMod").prop("disabled", false);
+            }
 
-                console.log('id' + id);
-                var username = $('#user_'+id).text();
-                var nivel = $('#nivel_'+id).text();
-                $('#nivelMod').val(nivel);
-                $("#idMod").val(id);
-                $("#usuarioMod").val(username);
-
-                console.log(nivel);
-            });
-            
-            $("#usuarioMod").on("change", function() {
-                var usu = $("#usuarioMod").val();
-                $.ajax({
-                    type: "post",
-                    url: "<?php echo base_url(); ?>index.php/Users/check_user/" + usu,
-                    success: function(r) {
-                        if (r == 0) {
-                            $("#submitUsuMod").prop("disabled", false);
-                        } else {
-                            $("#submitUsuMod").prop("disabled", true);
-                        }
-                    }
-                })
-            });
+            $("#contrasenaMod").on("change", enable);
+            $("#nivelMod").on("change", enable);
+           
             
         });
 
@@ -155,6 +156,7 @@
                         <div class='form-group'>
                             <label for='usuarioIns'>Usuario</label>
                             <input type='text' class='form-control' placeholder='Introduce un nombre de usuario' name='usuarioIns' id='usuarioIns' required />
+                            <div class='msg'> </div>                        
                         </div>
                         <div class='form-group'>
                             <label for='contrasenaIns'>Contraseña</label>
@@ -198,11 +200,12 @@
                     <div class="modal-body">
 
                         <!-- ****************** CUERPO DEL CUADRO MODAL UPDATE *********************** -->
-                        <?php echo form_open_multipart('Users/update_user','class="ui-filterable"'); ?>
+                        <?php echo form_open_multipart('Users/update_user','id="form_update" class="ui-filterable"'); ?>
 
                         <div class='form-group'>
                             <label for='usuarioMod'>Usuario</label>
                             <input type='text' class='form-control' placeholder='Introduce un nombre de usuario nuevo' name='usuarioMod' id='usuarioMod' required />
+                            <div class='msg'> </div>
                         </div>
                         <div class='form-group'>
                             <label for='contrasenaMod'>Contraseña</label>
