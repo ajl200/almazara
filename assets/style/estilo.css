@@ -4,10 +4,38 @@
     margin: 10px;
 }
 
+.msg {
+    padding: 5px;
+    margin: 5px;
+    height: 20px;
+}
+
+#error {
+    display: block;
+    text-align: center !important;
+    color: red;
+    font-size: 100px !important;
+}
+
+.modal_mensaje_error {
+    display: block;
+    text-align: center !important;
+    margin: 20px;
+
+}
+
 .btn {
     margin-bottom: 40px;
 }
 
 .alert {
     padding: 10px !important;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
 }
