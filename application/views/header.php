@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <!-- DATATABLES: -->
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-
+    <link rel='shortcut icon' type='image/png' href='<?php echo base_url()?>/assets/img/i.png'/>
     <!-- ESTILOS PROPIOS:-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>/assets/style/estilo.css" />
 
@@ -26,6 +26,12 @@
 --> 
     <script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
 </head>
+
+<script>
+    $(document).ready(function (){
+        $(".alert").delay(4000).fadeOut();
+    });
+</script>
 
 <body>
     <div class="container-fluid">
@@ -42,7 +48,7 @@
                         else {
                             // Administrador:
                             if ($nivel == 2) {
-                                echo anchor('Users/view_users/','Admin Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');
+                                echo anchor('Users/view_users/','Administrar Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');
                                 echo anchor('Login/logout',' ',' class="flex-sm-fill text-sm-center nav-link fas fa-sign-out-alt fa-2x"');
                             }
                             // Usuario:
@@ -54,7 +60,9 @@
                     else {
                         // Administrador:
                         if ($nivel == 2) {
-                            echo anchor('Users/view_users/','Admin Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');
+                            echo anchor('Proveedores/index/','Proveedores',' id="enlace_proveedores" class="flex-sm-fill text-sm-center nav-link"');
+                            echo anchor('Bodega/index/','Bodega',' id="enlace_bodega" class="flex-sm-fill text-sm-center nav-link"');
+                            echo anchor('Users/view_users/','Administrar Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Login/logout',' ',' class="flex-sm-fill text-sm-center nav-link fas fa-sign-out-alt fa-2x"');
                         }
                         // Usuario
