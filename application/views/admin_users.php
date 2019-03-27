@@ -52,7 +52,6 @@
                             $(".msg").html("<p class='error'> Este nombre de usuario ya existe en la base de datos. </p>");
                             $("#submitUsuMod").prop("disabled", true);
                             }
-                            
                         }
                     }
                 })
