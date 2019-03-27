@@ -8,7 +8,7 @@ CREATE TABLE proveedores (
     apellido1 VARCHAR(50) NOT NULL,
     apellido2 VARCHAR(50) NOT NULL,
     dni VARCHAR(9) NOT NULL,
-    telf TINYINT(9) UNSIGNED NOT NULL
+    telf INT UNSIGNED NOT NULL
 );
 
 /* Almacena los distintas variedades con un ID */
