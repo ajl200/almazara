@@ -39,3 +39,9 @@
 .success {
     color: green;
 }
+/*
+.form-control:focus {
+    border-color: blueviolet !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px blueviolet !important;
+  }
+  */
