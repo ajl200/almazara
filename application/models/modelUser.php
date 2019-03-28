@@ -3,17 +3,17 @@ class modelUser extends CI_Model{
 
 // ------- COMPRUEBO EL LOGIN CON LOS PARAMETROS DEL CONTROLADOR -------------------- //
     public function checkLogin($name,$pass) {
+        $checkHash = false;
         $query = $this->db->query("SELECT passwd FROM usuarios WHERE username = '$name';"); 
         foreach ($query->result_array() as $row) {
             $hash = $row['passwd'];
         }
         
-        if (isset($hash)) {
-            $checkHash = password_verify($pass, $hash);
-        }
-        
-        else {
-            $checkHash = true;
+            if (isset($hash)) {
+                $checkHash = password_verify($pass, $hash);
+                if ($checkHash == 1){
+                    $checkHash = true;
+            } 
         }
         return $checkHash;
     }

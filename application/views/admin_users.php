@@ -124,10 +124,10 @@
                     echo ("<td id='nivel_".$usuario["id"]."'class='d-none fila".$usuario["id"]."'>".$usuario["nivel"]."</td>");
                     
                     echo ("<td>");
-                            echo anchor("Users/update_user/".$usuario['id'],"<span class='far fa-edit'></span>","  data-id='".$usuario['id']."' class='btn-update btn btn-info' data-toggle='modal' id='update_button' data-target='#modal_mod'");
+                            echo anchor("Users/update_user/".$usuario['id'],"<span class='far fa-edit'></span>","  data-id='".$usuario['id']."' class='btn-update btn bg-transparent ' data-toggle='modal' id='update_button' data-target='#modal_mod'");
                     echo ("</td>");  
                     echo ("<td>");
-                            echo anchor("Users/delete_user/".$usuario['id'],"<span class='fas fa-trash-alt'></span>","class='btn btn-danger'");
+                            echo anchor("Users/delete_user/".$usuario['id'],"<span class='fas fa-trash-alt text-danger'></span>","class='btn bg-transparent  '");
                     echo ("</td>");
                     echo ("</tr>");
                 }

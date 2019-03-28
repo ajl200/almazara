@@ -10,6 +10,11 @@ class Login extends CI_Controller {
         $this->load->model('modelUser');
         $data["noHeader"] = false;
         $data["viewName"] = "login";
+        if ($this->session->flashdata('data') != null){
+            $a = $this->session->flashdata('data');
+            $data['msg'] = $a['msg'];
+            $data['noHeader'] = $a['noHeader'];
+        }
         $this->load->view('template',$data);
     }
     
@@ -30,12 +35,11 @@ class Login extends CI_Controller {
         $name = $this->input->get_post("name");
         $pass = $this->input->get_post("password");
         $r = $this->modelUser->checkLogin($name,$pass);
-
         if($r == 0){
             $data["noHeader"] = false;
-            $data["msg"] = "<h5 class='error'>Usuario o contraseña incorrectos</h5>";
-            $data["viewName"] = "login";
-            $this->load->view('template',$data);
+            $data["msg"] = "3";
+            $this->session->set_flashdata('data',$data);
+            redirect('Login/index');
         }
         else{
             $id = $this->modelUser->get_id($name);

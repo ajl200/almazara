@@ -78,6 +78,32 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (id,username,passwd,nivel) VALUES (null,'admin','$2y$10$gCkJrQW6y81UCzNEo3pxNO4uD0Y9zCOij901viKDLUEYxYM8Gsprq','2');
+INSERT INTO aceituna (id,variedad) VALUES (null,'Picual'),
+(null,'Arbequina'),(null,'Blanqueta'),
+(null,'Cornicabra'), 
+(null,'Royal'),(null,'Lechín de Sevilla'),
+(null,'Lechín de Granada'),
+(null,'Morisca'), (null,'Alfafara'),
+(null,'Verdial de Badajoz');
+
+INSERT INTO localidad (id,localidad) VALUES (null,'Albox'),
+(null,'Almería'),
+(null,'Antas'),
+(null,'Arboleas'),
+(null,'Bacares'),
+(null,'Benahadux'),
+(null,'Cantoria'),
+(null,'Chirivel'),
+(null,'El Ejido'),
+(null,'Los Gayardos'),
+(null,'Macael'),
+(null,'Oria'),
+(null,'Olula del Rio'),
+(null,'Sorbas'),
+(null,'Taberno'),
+(null,'Zurgena');
+
+
 
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
         `id` varchar(128) NOT NULL,

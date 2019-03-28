@@ -18,12 +18,7 @@
     <!-- ESTILOS PROPIOS:-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>/assets/style/estilo.css" />
 
-    
-    <!-- JS PROPIOS: -->
-<!--    <script src=<    ?php echo base_url("assets/js/Mapas.js");?>></script>
-    <script src=<              ?php echo base_url("assets/js/demo.js");?>></script>
-    <script src=<        ?php echo base_url("assets/js/jquery.hotspot.js");?>></script>
---> 
+
     <script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
 </head>
 
@@ -60,6 +55,8 @@
                     else {
                         // Administrador:
                         if ($nivel == 2) {
+                            $path =  "<img src='".base_url("/assets/img/i.png")."' id='favicon'>";
+                            echo anchor('Proveedores/index/', $path,' class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Proveedores/index/','Proveedores',' id="enlace_proveedores" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Bodega/index/','Bodega',' id="enlace_bodega" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Users/view_users/','Administrar Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');

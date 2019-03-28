@@ -1,5 +1,9 @@
-<br><br>
-<span id="footer" class="text-center">&copy; Antonio Jiménez FCT Intermark </span>
+
+<div id='footer'>
+    <span class="text-center">&copy; Antonio Jiménez FCT Intermark </span>
+</div>
+
+
 
 <!-- Optional JavaScript -->
     <!-- Popper.js, then Bootstrap JS -->
