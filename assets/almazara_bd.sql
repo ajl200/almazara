@@ -7,7 +7,7 @@ CREATE TABLE proveedores (
     nombre VARCHAR(50) NOT NULL, 
     apellido1 VARCHAR(50) NOT NULL,
     apellido2 VARCHAR(50) NOT NULL,
-    dni VARCHAR(9) NOT NULL UNIQUE,
+    dni VARCHAR(9) NOT NULL,
     telf VARCHAR(9) NOT NULL
 );
 
@@ -26,7 +26,6 @@ CREATE TABLE aportacion (
     kilos INT UNSIGNED NOT NULL,
     eco BOOLEAN
 );
-
 
 CREATE TABLE localidad (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -75,7 +74,8 @@ CREATE TABLE usuarios (
 
 INSERT INTO usuarios (id,username,passwd,nivel) VALUES (null,'admin','$2y$10$gCkJrQW6y81UCzNEo3pxNO4uD0Y9zCOij901viKDLUEYxYM8Gsprq','2');
 
-INSERT INTO aceituna (id,variedad) VALUES (null,'Picual'),
+INSERT INTO variedad (id, variedad) VALUES 
+(null,'Picual'),
 (null,'Arbequina'),(null,'Blanqueta'),
 (null,'Cornicabra'), 
 (null,'Royal'),(null,'Lechín de Sevilla'),
@@ -83,7 +83,8 @@ INSERT INTO aceituna (id,variedad) VALUES (null,'Picual'),
 (null,'Morisca'), (null,'Alfafara'),
 (null,'Verdial de Badajoz');
 
-INSERT INTO localidad (id,localidad) VALUES (null,'Albox'),
+INSERT INTO localidad (id, localidad) VALUES 
+(null,'Albox'),
 (null,'Almería'),
 (null,'Antas'),
 (null,'Arboleas'),
@@ -100,8 +101,6 @@ INSERT INTO localidad (id,localidad) VALUES (null,'Albox'),
 (null,'Taberno'),
 (null,'Zurgena');
 
-
-
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
         `id` varchar(128) NOT NULL,
         `ip_address` varchar(45) NOT NULL,
@@ -110,7 +109,9 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
         KEY `ci_sessions_timestamp` (`timestamp`)
 );
 
+/*
 CREATE TABLE aportacion_tolva (
     id_aportacion INT UNSIGNED NOT NULL,
     id_tolva TINYINT UNSIGNED NOT NULL
 );
+*/
