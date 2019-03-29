@@ -58,6 +58,7 @@
                             $path =  "<img src='".base_url("/assets/img/i.png")."' id='favicon'>";
                             echo anchor('Proveedores/index/', $path,' class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Proveedores/index/','Proveedores',' id="enlace_proveedores" class="flex-sm-fill text-sm-center nav-link"');
+                            echo anchor('Aportaciones/index/','Aportaciones',' id="enlace_aportaciones" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Bodega/index/','Bodega',' id="enlace_bodega" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Users/view_users/','Administrar Usuarios',' id="enlace_usuarios" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Login/logout',' ',' class="flex-sm-fill text-sm-center nav-link fas fa-sign-out-alt fa-2x"');

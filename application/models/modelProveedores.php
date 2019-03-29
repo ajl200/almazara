@@ -14,19 +14,18 @@ class modelProveedores extends CI_Model {
     }
 
     public function insert_aportacion($id_prov, $kg, $variedad, $localidad, $eco){
-        $query = $this->db->query("INSERT INTO proveedor_aportacion (id, id_proveedor, kilos , id_variedad, localidad, ecologico) VALUES (null, '$id_prov', '$kg', '$variedad', '$localidad', $eco);"); 
+        $query = $this->db->query("INSERT INTO aportacion (id, id_proveedor, kilos , id_variedad, id_localidad, eco) VALUES (null, '$id_prov', '$kg', '$variedad', '$localidad', $eco);"); 
         return $this->db->affected_rows();
     }
 
     public function get_variedades() {
-        $query = $this->db->query("SELECT * FROM aceituna;"); 
+        $query = $this->db->query("SELECT * FROM variedad;"); 
         $data = array();
             if ($query->num_rows() > 0){
                 foreach ($query->result_array() as $row){
                     $data[] = $row;
                 }
-            }
-           
+            } 
         return  array_column($data, 'variedad');
     }
 
@@ -38,14 +37,33 @@ class modelProveedores extends CI_Model {
                     $data[] = $row;
                 }
             }
-           
         return  array_column($data, 'localidad');
     }
 
+    public function validar_dni($dni) {
+        $valid = 0; //bien, no existe.
+        $query = $this->db->query("SELECT id FROM proveedores where dni = '$dni';"); 
+        $data = array();
+            if ($query->num_rows() > 0){
+                foreach ($query->result_array() as $row){
+                    $data[] = $row;
+                }
+            }
+        if (count($data) > 0){
+            $valid = 1; //mal, existe.
+        }
+
+        var_dump($data);
+        return $valid;
+    }
+
+
     public function insert($nombre, $apellido1, $apellido2, $dni, $telf){
-        $query = $this->db->query("INSERT INTO proveedores (id, nombre, apellido1, apellido2, dni, telf) VALUES (null,'$nombre', '$apellido1', '$apellido2', '$dni', $telf);"); 
+        $query = $this->db->query("INSERT INTO proveedores (id, nombre, apellido1, apellido2, dni, telf) VALUES (null,'$nombre', '$apellido1', '$apellido2', '$dni', '$telf');"); 
         return $this->db->affected_rows();
     }
+
+
 
     public function delete($id){
         $query = $this->db->query("DELETE FROM proveedores WHERE id = '$id'"); 
@@ -53,7 +71,6 @@ class modelProveedores extends CI_Model {
     }
 
     public function update($id,$nombre, $apellido1, $apellido2, $dni, $telf){
-        
         $status = 0;
         $this->db->trans_start();
         $query = $this->db->query("DELETE FROM proveedores WHERE id = '$id'"); 
@@ -66,6 +83,5 @@ class modelProveedores extends CI_Model {
             $status = 1;
         }
         return $status;
-
     }
 }

@@ -1,41 +1,92 @@
 <script>
+
+
+        // VALIDACION DNI:
+    function validar_dni (opc){
+        dni = $("#"+opc+"_dni").val();
+        element = $("#"+opc+"_dni")[0];
+        var abecedario = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        var dni_length = dni.length;
+        var acum = "";
+        // -1 sin la letra:
+        for( i = 0; i < dni_length -1 ; i++){
+            var n = dni.charAt(i);
+            acum += n;
+        }
+        var letra_input = dni.charAt(dni_length-1);
+        var letra = abecedario.charAt(parseInt(acum % 23));
+        console.log(letra , letra_input);
+        if (letra != letra_input){
+            element.setCustomValidity('Introduzca un DNI válido.');
+        }else{
+        
+        var formData = {
+                    'dni' : dni
+                };
+                $('form').on('submit', function(e){
+    // validation code here
+    if(!valid) {
+      e.preventDefault();
+    }
+  });
+                
+        $.ajax({
+                type     : "POST",
+                cache    : false,
+                url      : "<?php echo base_url(); ?>index.php/Proveedores/validar_dni",
+                data     : formData,
+                dataType : 'json',
+                encode : true
+                })
+                .done(function(r) {
+                    console.log('llega ' + r );
+                    if (r == 1){
+                        $("#submit_insert").prop("disabled", true);
+                        element.setCustomValidity('Ya se encuentra un usuario asociado a este DNI.');
+                    }else {
+                        $("#submit_insert").prop("disabled", false);
+                        element.setCustomValidity('');
+                    } 
+            });
+            e.preventDefault();    
+        }
+    }   
+
     $(document).ready(function(){
     $("#enlace_proveedores").toggleClass('active');
 
    
-    /*
-    $('#tabla_proveedores').DataTable();
-    // Establecemos un placeholder para el buscador.
+    
+    $('#tabla_proveedores').DataTable({
+        "language": {
+            "search": "Buscar proveedor:",
+            "info": "Mostrando de _START_ - _END_ de _TOTAL_ entrada(s).",
+            "emptyTable": "No hay datos disponibles",
+            "infoEmpty":      "",
+            "loadingRecords": "Cargando...",
+            "processing":     "Procesando petición...",
+            "zeroRecords":    "No se encuentran coincidencias",
+            "lengthMenu":     "Mostrar _MENU_ entradas",
+            "paginate": {
+                "first":      "<<",
+                "last":       ">>",
+                "next":       ">",
+                "previous":   "<"
+            },
+  }
+    });
+    
+        // Establecemos un placeholder para el buscador.
         $("input[type='search']").attr('placeholder','Buscar Proveedor');
-        // Eliminamos la etiqueta del input de buscador.
-        $('label').contents().first().remove();
         // Añadimos la clase form-control para que el buscador tenga el aspecto de bootstrap.
         $("input[type='search']").addClass('form-control');
-    */
+    
+    
 
-    // VALIDACION DNI:
-    function validar_dni (opc){
-            var element = $("#"+opc+"_dni")[0];
-            var abecedario = 'TRWAGMYFPDXBNJZSQVHLCKE';
-            var dni = $("#"+opc+"_dni").val();
-            var dni_length = dni.length;
-            var acum = "";
-            // -1 sin la letra:
-            for( i = 0; i < dni_length -1 ; i++){
-                var n = dni.charAt(i);
-                acum += n;
-            }
-            var letra_input = dni.charAt(dni_length-1);
-            var letra = abecedario.charAt(parseInt(acum % 23));
-            
-            if (letra == letra_input){
-                element.setCustomValidity('');
-            } else {
-                element.setCustomValidity('Introduzca un DNI válido.');
-            }
-    }
+    
+
     $(document).on('click',"#btn_update", function(){
-        var id = $(this).data('id');
+        id = $(this).data('id');
         var nombre = $('#nombre_'+id).text();
         var apellido1 = $('#apellido1_'+id).text();
         var apellido2 = $('#apellido2_'+id).text();
@@ -50,7 +101,6 @@
         $('#upd_dni').val(dni); 
         $('#upd_telefono').val(telf); 
     });
-
 
     $(document).on('click','.tt', function(){
         $("#ins_aportacion").trigger('reset');
@@ -68,8 +118,9 @@
         $("#insercion").trigger('reset');
     });
 
-    $("#submit_insert").on('click', validar_dni);
-    $("#submit_update").on('click', validar_dni);
+    $("#ins_dni").on('change', validar_dni('ins'));
+    $("#submit_update").on('click', validar_dni('upd'));
+
     $("#ins_dni").on('blur', function () {
         if ($(this).val() != ""){
             var ins = 'ins';
@@ -108,8 +159,7 @@
 
     <div class="row">
             <div class="col-md-12 botones">
-                <button type="button" id="btn_insert" class="btn btn-primary" data-toggle="modal" data-target="#modal_insert"> Insertar Proveedor </button>            
-                
+                <button type="button" id="btn_insert" class="btn btn-primary" data-toggle="modal" data-target="#modal_insert"> Insertar Proveedor </button>        
             </div>
     </div>
 
@@ -140,10 +190,10 @@
                             echo ("<td class='tt' data-id=".$proveedor["id"]." id='dni_".$proveedor["id"]."'>".$proveedor["dni"]."</td>");
                             echo ("<td class='tt' data-id=".$proveedor["id"]." id='telf_".$proveedor["id"]."'>".$proveedor["telf"]."</td>");
                             echo ("<td>");
-                                    echo anchor("Proveedores/update/".$proveedor['id'],"<span class='far fa-edit'></span>","  data-id=".$proveedor['id']." id='btn_update' class='btn-update btn bg-transparent ' data-toggle='modal'  data-target='#modal_update'");
+                            echo anchor("Proveedores/update/".$proveedor['id'],"<span class='far fa-edit'></span>","  data-id=".$proveedor['id']." id='btn_update' class='btn-update btn bg-transparent ' data-toggle='modal'  data-target='#modal_update'");
                             echo ("</td>");  
                             echo ("<td>");
-                                    echo anchor("Proveedores/delete/".$proveedor['id'],"<span class='fas fa-trash-alt text-danger'></span>","class='btn bg-transparent'");
+                            echo anchor("Proveedores/delete/".$proveedor['id'],"<span class='fas fa-trash-alt text-danger'></span>","class='btn bg-transparent'");
                             echo ("</td>");
                             echo ("</tr>");
                         }
@@ -268,7 +318,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- ****************** CUERPO DEL CUADRO MODAL INSERT *********************** -->
-                        <?php echo form_open_multipart('Proveedores/insert_aportacion','id="ins_aportacion" class="ui-filterable"'); ?>
+                        <?php echo form_open_multipart('Aportaciones/insert','id="ins_aportacion" class="ui-filterable"'); ?>
                         <input type='text' id='prov_id' name='prov_id' class='d-none'/>
 
                         <div class='form-group'>
@@ -317,7 +367,5 @@
                 </div> <!-- cierra el modal body -->
             </div>
         </div> <!-- modal_insert -->
-
-
 </div>
 
