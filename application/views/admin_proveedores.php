@@ -23,13 +23,7 @@
         var formData = {
                     'dni' : dni
                 };
-                $('form').on('submit', function(e){
-    // validation code here
-    if(!valid) {
-      e.preventDefault();
-    }
-  });
-                
+             
         $.ajax({
                 type     : "POST",
                 cache    : false,
