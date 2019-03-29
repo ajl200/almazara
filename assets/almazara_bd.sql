@@ -7,24 +7,24 @@ CREATE TABLE proveedores (
     nombre VARCHAR(50) NOT NULL, 
     apellido1 VARCHAR(50) NOT NULL,
     apellido2 VARCHAR(50) NOT NULL,
-    dni VARCHAR(9) NOT NULL,
-    telf INT UNSIGNED NOT NULL
+    dni VARCHAR(9) NOT NULL UNIQUE,
+    telf VARCHAR(9) NOT NULL
 );
 
 /* Almacena los distintas variedades con un ID */
-CREATE TABLE aceituna (
+CREATE TABLE variedad (
     id TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    variedad VARCHAR(20) NOT NULL
+    variedad VARCHAR(50) NOT NULL
 );
 
 /* Las aportaciones de cada proveedor, por defecto el valor ecologico será false */
-CREATE TABLE proveedor_aportacion (
+CREATE TABLE aportacion (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_proveedor INT UNSIGNED NOT NULL,
     id_variedad INT UNSIGNED NOT NULL,
+    id_localidad INT UNSIGNED NOT NULL,
     kilos INT UNSIGNED NOT NULL,
-    localidad INT UNSIGNED NOT NULL,
-    ecologico BOOLEAN
+    eco BOOLEAN
 );
 
 
@@ -36,48 +36,45 @@ CREATE TABLE localidad (
 /* Un bidon solo puede almacenar una variedad de aceite */
 CREATE TABLE bidon (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    litros_maximos INT UNSIGNED NOT NULL,
+    litros_max INT UNSIGNED NOT NULL,
     litros_almacenados INT UNSIGNED NOT NULL,
-    variedad TINYINT UNSIGNED NOT NULL
+    id_variedad TINYINT UNSIGNED NOT NULL
 );
 
-/* Una tolva solo puede almacenar una variedad de aceituna */
+/* Una tolva solo puede almacenar una variedad de aceituna 
 CREATE TABLE tolva (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     kilos_maximos INT UNSIGNED NOT NULL,
     kilos_almacenados INT UNSIGNED NOT NULL,
     variedad TINYINT UNSIGNED NOT NULL
 );
+*/
 
 /* En un bidon se almacenan N lotes de aceite pero de la misma variedad de aceituna */
-CREATE TABLE bidon_almacena (
-    id_bidon INT UNSIGNED,
-    id_aceite INT UNSIGNED,
-    variedad TINYINT UNSIGNED
+CREATE TABLE bidon_almacena_aceite (
+    id_bidon INT UNSIGNED NOT NULL,
+    id_aceite INT UNSIGNED NOT NULL,
+    litros_almacenados INT UNSIGNED NOT NULL
 );
 
 /* Del aceite almacenamos la acidez *(una unica acidez), los litros, y la variedad */
 CREATE TABLE aceite (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    acidez INT UNSIGNED NOT NULL,
+    id_aportacion INT NOT NULL,
+    id_variedad TINYINT UNSIGNED NOT NULL,
     litros INT UNSIGNED NOT NULL,
-    variedad TINYINT UNSIGNED NOT NULL
-);
-
-/* El aceite se crea mediante N aportaciones del mismo tipo de variedad */
-CREATE TABLE aceite_aportacion (
-    id_aceite INT UNSIGNED NOT NULL,
-    id_aportacion INT UNSIGNED NOT NULL
+    acidez INT UNSIGNED NOT NULL
 );
 
 CREATE TABLE usuarios (
     id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username varchar(50) not null,
+    username varchar(20) not null,
     passwd varchar(255) not null,
     nivel varchar(3)  not null
 );
 
 INSERT INTO usuarios (id,username,passwd,nivel) VALUES (null,'admin','$2y$10$gCkJrQW6y81UCzNEo3pxNO4uD0Y9zCOij901viKDLUEYxYM8Gsprq','2');
+
 INSERT INTO aceituna (id,variedad) VALUES (null,'Picual'),
 (null,'Arbequina'),(null,'Blanqueta'),
 (null,'Cornicabra'), 
