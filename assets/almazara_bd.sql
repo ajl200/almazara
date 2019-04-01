@@ -11,11 +11,7 @@ CREATE TABLE proveedores (
     telf VARCHAR(9) NOT NULL
 );
 
-/* Almacena los distintas variedades con un ID */
-CREATE TABLE variedad (
-    id TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    variedad VARCHAR(50) NOT NULL
-);
+
 
 /* Las aportaciones de cada proveedor, por defecto el valor ecologico será false */
 CREATE TABLE aportacion (
@@ -24,12 +20,19 @@ CREATE TABLE aportacion (
     id_variedad INT UNSIGNED NOT NULL,
     id_localidad INT UNSIGNED NOT NULL,
     kilos INT UNSIGNED NOT NULL,
-    eco BOOLEAN
+    eco BOOLEAN not null,
+    fecha DATE not null
 );
 
 CREATE TABLE localidad (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     localidad VARCHAR(100) NOT NULL
+);
+
+/* Almacena los distintas variedades con un ID */
+CREATE TABLE variedad (
+    id TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    variedad VARCHAR(50) NOT NULL
 );
 
 /* Un bidon solo puede almacenar una variedad de aceite */
@@ -60,7 +63,6 @@ CREATE TABLE bidon_almacena_aceite (
 CREATE TABLE aceite (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_aportacion INT NOT NULL,
-    id_variedad TINYINT UNSIGNED NOT NULL,
     litros INT UNSIGNED NOT NULL,
     acidez INT UNSIGNED NOT NULL
 );
@@ -73,6 +75,19 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (id,username,passwd,nivel) VALUES (null,'admin','$2y$10$gCkJrQW6y81UCzNEo3pxNO4uD0Y9zCOij901viKDLUEYxYM8Gsprq','2');
+DROP TABLE variedad;
+DROP TABLE localidad;
+
+CREATE TABLE localidad (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    localidad VARCHAR(100) NOT NULL
+);
+
+/* Almacena los distintas variedades con un ID */
+CREATE TABLE variedad (
+    id TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    variedad VARCHAR(50) NOT NULL
+);
 
 INSERT INTO variedad (id, variedad) VALUES 
 (null,'Picual'),
@@ -82,6 +97,7 @@ INSERT INTO variedad (id, variedad) VALUES
 (null,'Lechín de Granada'),
 (null,'Morisca'), (null,'Alfafara'),
 (null,'Verdial de Badajoz');
+
 
 INSERT INTO localidad (id, localidad) VALUES 
 (null,'Albox'),
@@ -100,6 +116,8 @@ INSERT INTO localidad (id, localidad) VALUES
 (null,'Sorbas'),
 (null,'Taberno'),
 (null,'Zurgena');
+
+
 
 CREATE TABLE IF NOT EXISTS `ci_sessions` (
         `id` varchar(128) NOT NULL,
