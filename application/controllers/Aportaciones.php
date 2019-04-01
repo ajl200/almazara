@@ -6,11 +6,13 @@ class Aportaciones extends Security {
 
     public function index(){
         $data["viewName"] = "admin_aportaciones";
+        $data['lista_aportaciones'] = $this->modelAportaciones->get_all();
 
         if ($this->session->flashdata('data') != null){
             $a = $this->session->flashdata('data');
             $data['msg'] = $a['msg'];
         }
+
         $this->load->view('template', $data);
     }
 
@@ -20,34 +22,15 @@ class Aportaciones extends Security {
         $variedad = $this->input->get_post('ins_variedad'); 
         $localidad = $this->input->get_post('ins_localidad'); 
         $eco = $this->input->get_post('cb_eco'); 
+        $fecha = $this->input->get_post('prov_fecha');
         if ($eco == null){
             $eco = 0;
         }
-
-        $r = $this->modelProveedores->insert_aportacion($id_prov, $kg, $variedad, $localidad, $eco);
-        if ($r == 0) {
-            //error
-            $data["msg"] = "1";
-            $this->session->set_flashdata('data',$data);
-            redirect('Proveedores/index');
-        } else {
-            //bien
-            $data["msg"] = "0";
-            $this->session->set_flashdata('data',$data);
-            redirect('Proveedores/index');
-        }
-    }
-
-    public function update () {
-        $id = $this->input->get_post('upd_id');
-        $nombre = $this->input->get_post('upd_nombre');
-        $apellido1 = $this->input->get_post('upd_apellido1');
-        $apellido2 = $this->input->get_post('upd_apellido2');
-        $dni = $this->input->get_post('upd_dni');
-        $telf = $this->input->get_post('upd_telefono');
         
-        $r = $this->modelProveedores->update($id,$nombre, $apellido1, $apellido2, $dni, $telf);
-
+        $r = $this->modelAportaciones->insert($id_prov, $kg, $variedad, $localidad, $eco, $fecha);
+        $id_aportacion = $this->modelAportaciones->get_next_id();
+        $r2 = $this->modelAportaciones->producir_aceite($id_aportacion);
+        
         if ($r == 0) {
             //error
             $data["msg"] = "1";
@@ -62,19 +45,18 @@ class Aportaciones extends Security {
     }
 
     public function delete ($id) {
-        $r = $this->modelProveedores->delete($id);
+        $r = $this->modelAportaciones->delete($id);
         if ($r == 0) {
             //error
             $data["msg"] = "1";
             $this->session->set_flashdata('data',$data);
-            redirect('Proveedores/index');
+            redirect('Aportaciones/index');
         } else {
             //bien
             $data["msg"] = "0";
             $this->session->set_flashdata('data',$data);
-            redirect('Proveedores/index');
+            redirect('Aportaciones/index');
         }
     }
-
-    
+        
 }
