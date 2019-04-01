@@ -23,7 +23,7 @@
     margin: 20px;
 }
 
-td:hover {
+.tt:hover {
     cursor: pointer;
 }
 
