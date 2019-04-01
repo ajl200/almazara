@@ -4,6 +4,8 @@
                 parent::__construct();
                 $this->load->model('modelUser');
                 $this->load->model('modelProveedores');
+                $this->load->model('modelAportaciones');
+                
                 if (isset($this->session->userdata['loguedIn'])) {
                     
                 } else {
