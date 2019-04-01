@@ -9,6 +9,7 @@ class Proveedores extends Security {
         $data['lista_variedades'] = $this->modelProveedores->get_variedades();
         $data['lista_localidades'] = $this->modelProveedores->get_localidades();
         $data["viewName"] = "admin_proveedores";
+        
 
         if ($this->session->flashdata('data') != null){
             $a = $this->session->flashdata('data');
@@ -23,6 +24,7 @@ class Proveedores extends Security {
         $apellido2 = $this->input->get_post('ins_apellido2');
         $dni = $this->input->get_post('ins_dni');
         $telf = $this->input->get_post('ins_telefono');
+        
 
         $r = $this->modelProveedores->insert($nombre, $apellido1, $apellido2, $dni, $telf);
 
@@ -65,9 +67,14 @@ class Proveedores extends Security {
     public function validar_dni () {
         $dni = $this->input->post('dni');
         $r = $this->modelProveedores->validar_dni($dni);
-        echo json_encode($r);
-        
+        if ($r == 0) {
+            $data = "0";
+        }else{
+            $data = "1";
+        } 
+        echo json_encode($data);
     }
+    
 
     public function delete ($id) {
         $r = $this->modelProveedores->delete($id);

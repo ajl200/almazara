@@ -13,11 +13,6 @@ class modelProveedores extends CI_Model {
         return $data;
     }
 
-    public function insert_aportacion($id_prov, $kg, $variedad, $localidad, $eco){
-        $query = $this->db->query("INSERT INTO aportacion (id, id_proveedor, kilos , id_variedad, id_localidad, eco) VALUES (null, '$id_prov', '$kg', '$variedad', '$localidad', $eco);"); 
-        return $this->db->affected_rows();
-    }
-
     public function get_variedades() {
         $query = $this->db->query("SELECT * FROM variedad;"); 
         $data = array();
@@ -26,35 +21,24 @@ class modelProveedores extends CI_Model {
                     $data[] = $row;
                 }
             } 
-        return  array_column($data, 'variedad');
+        return  array_column($data, 'variedad' , 'id');
     }
 
     public function get_localidades() {
-        $query = $this->db->query("SELECT * FROM localidad;"); 
+        $query = $this->db->query("SELECT id,localidad  FROM localidad;"); 
         $data = array();
             if ($query->num_rows() > 0){
                 foreach ($query->result_array() as $row){
                     $data[] = $row;
                 }
             }
-        return  array_column($data, 'localidad');
+            
+        return  array_column($data , 'localidad','id');
     }
 
     public function validar_dni($dni) {
-        $valid = 0; //bien, no existe.
-        $query = $this->db->query("SELECT id FROM proveedores where dni = '$dni';"); 
-        $data = array();
-            if ($query->num_rows() > 0){
-                foreach ($query->result_array() as $row){
-                    $data[] = $row;
-                }
-            }
-        if (count($data) > 0){
-            $valid = 1; //mal, existe.
-        }
-
-        var_dump($data);
-        return $valid;
+        $query = $this->db->query("SELECT 1 FROM proveedores where dni = '$dni';"); 
+        return $this->db->affected_rows();
     }
 
 

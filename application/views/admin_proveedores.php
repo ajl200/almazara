@@ -3,11 +3,13 @@
 
         // VALIDACION DNI:
     function validar_dni (opc){
+        validar_ajax = false;
         dni = $("#"+opc+"_dni").val();
         element = $("#"+opc+"_dni")[0];
         var abecedario = 'TRWAGMYFPDXBNJZSQVHLCKE';
         var dni_length = dni.length;
         var acum = "";
+        dni_def = $('#dni_'+id).text();
         // -1 sin la letra:
         for( i = 0; i < dni_length -1 ; i++){
             var n = dni.charAt(i);
@@ -16,44 +18,78 @@
         var letra_input = dni.charAt(dni_length-1);
         var letra = abecedario.charAt(parseInt(acum % 23));
         console.log(letra , letra_input);
-        if (letra != letra_input){
+    if (letra != letra_input){
+            $("#submit_insert").prop("disabled", true);
             element.setCustomValidity('Introduzca un DNI válido.');
-        }else{
-        
-        var formData = {
-                    'dni' : dni
-                };
-             
-        $.ajax({
-                type     : "POST",
-                cache    : false,
-                url      : "<?php echo base_url(); ?>index.php/Proveedores/validar_dni",
-                data     : formData,
-                dataType : 'json',
-                encode : true
-                })
-                .done(function(r) {
-                    console.log('llega ' + r );
-                    if (r == 1){
-                        $("#submit_insert").prop("disabled", true);
-                        element.setCustomValidity('Ya se encuentra un usuario asociado a este DNI.');
-                    }else {
-                        $("#submit_insert").prop("disabled", false);
-                        element.setCustomValidity('');
-                    } 
-            });
-            e.preventDefault();    
+    } else {
+        if (opc == 'ins'){   
+        // Si vamos a insertar y la letra es = al input realizará la validación de ajax.          
+        validar_ajax = true;
+        // Si vamos a modificar y la letra es = al input y el dni no ha sido modificado no hará la validacion por ajax. 
+        // Si es distinta si hará la comprobación del nuevo dni
+    } else {
+        if (dni == dni_def){
+        validar_ajax = false;
+        $("#submit_insert").prop("disabled", false);
+        element.setCustomValidity('');
+    } else {
+        validar_ajax = true;
+    }
+    }
+    }
+    }
+    
+    $(document).ready(function(){   
+       
+    $("#ins_dni").on('change', function(e){
+        validar_dni('ins');
+        if(validar_ajax){  
+            a();
+            e.preventDefault(); 
         }
-    }   
+    });
 
-    $(document).ready(function(){
+    function a (){
+        var formData = {
+                        'dni' : dni
+                    };
+        $.ajax({
+                    type     : "POST",
+                    cache    : false,
+                    url      : "<?php echo base_url(); ?>index.php/Proveedores/validar_dni",
+                    data     : formData,
+                    dataType : 'json',
+                    encode : true
+                    })
+                    .done(function(r) {
+                        console.log('llega ' + r );
+                        if (r == 1 ){
+                            $("#submit_insert").prop("disabled", true);
+                            element.setCustomValidity('Ya se encuentra un usuario asociado a este DNI.');
+                        }else {
+                            console.log('DONE!');
+                            $("#submit_insert").prop("disabled", false);
+                            element.setCustomValidity('');
+                        }
+                        })
+                        .fail(function(r) {
+                            console.log('error ' + r );
+                            alert( "error" );
+                        }); 
+    }
+    $("#upd_dni").on('change', function(e){
+        validar_dni('upd');
+        if(validar_ajax){
+            a();
+            e.preventDefault(); 
+        }
+    });
+
     $("#enlace_proveedores").toggleClass('active');
 
-   
-    
     $('#tabla_proveedores').DataTable({
         "language": {
-            "search": "Buscar proveedor:",
+            "search": "Buscador:",
             "info": "Mostrando de _START_ - _END_ de _TOTAL_ entrada(s).",
             "emptyTable": "No hay datos disponibles",
             "infoEmpty":      "",
@@ -67,11 +103,12 @@
                 "next":       ">",
                 "previous":   "<"
             },
-  }
+        }
     });
     
         // Establecemos un placeholder para el buscador.
         $("input[type='search']").attr('placeholder','Buscar Proveedor');
+        $("select[name='tabla_proveedores_length']").addClass("form-control form-control-sm");
         // Añadimos la clase form-control para que el buscador tenga el aspecto de bootstrap.
         $("input[type='search']").addClass('form-control');
     
@@ -86,7 +123,6 @@
         var apellido2 = $('#apellido2_'+id).text();
         var dni = $('#dni_'+id).text();
         var telf = $('#telf_'+id).text();
-        console.log(id,nombre, apellido1, apellido2, dni, telf);
         
         $('#upd_id').val(id); 
         $('#upd_nombre').val(nombre); 
@@ -109,11 +145,8 @@
     });
 
     $("#btn_insert").on('click', function(){
-        $("#insercion").trigger('reset');
+        $("#form_insert").trigger('reset');
     });
-
-    $("#ins_dni").on('change', validar_dni('ins'));
-    $("#submit_update").on('click', validar_dni('upd'));
 
     $("#ins_dni").on('blur', function () {
         if ($(this).val() != ""){
@@ -154,6 +187,7 @@
     <div class="row">
             <div class="col-md-12 botones">
                 <button type="button" id="btn_insert" class="btn btn-primary" data-toggle="modal" data-target="#modal_insert"> Insertar Proveedor </button>        
+                <?php echo anchor('Aportaciones/index/','Historial de aportaciones',' class="btn btn-primary"'); ?>
             </div>
     </div>
 
@@ -210,7 +244,7 @@
                     </div>
                     <div class="modal-body">
                         <!-- ****************** CUERPO DEL CUADRO MODAL INSERT *********************** -->
-                        <?php echo form_open_multipart('Proveedores/insert','id="insercion" class="ui-filterable"'); ?>
+                        <?php echo form_open_multipart('Proveedores/insert','id="form_insert" class="ui-filterable"'); ?>
 
                         <div class='form-group'>
                             <label for='ins_nombre'>Nombre</label>
@@ -229,7 +263,7 @@
 
                         <div class='form-group'>
                             <label for='ins_dni'>DNI</label>
-                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca el DNI' name='ins_dni' id='ins_dni' value='33871117Y' required />                 
+                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca el DNI' name='ins_dni' id='ins_dni' value='' required />                 
                         </div>
 
                         <div class='form-group'>
@@ -316,6 +350,11 @@
                         <input type='text' id='prov_id' name='prov_id' class='d-none'/>
 
                         <div class='form-group'>
+                            <label for='ins_aportacion_kg'>Fecha: </label>
+                            <input type='date' class='form-control' value='<?php echo date('Y-m-d'); ?>' name='prov_fecha' id='prov_fecha' required/>
+                        </div>
+
+                        <div class='form-group'>
                             <label for='ins_aportacion_kg'>Proveedor: </label>
                             <input type='text' class='form-control' value='' name='prov_nombre' id='prov_nombre' disabled/>
                         </div>
@@ -330,7 +369,7 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="inputGroupSelect01">Variedad</label>
                                 </div>
-                                <?php echo form_dropdown('ins_variedad', $lista_variedades, "", "class='custom-select'"); ?>
+                                <?php echo form_dropdown('ins_variedad', $lista_variedades, "", "class='custom-select' required"); ?>
                             </div>
                         </div>
 
@@ -339,7 +378,7 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="inputGroupSelect01">Localidad</label>
                                 </div>
-                                <?php echo form_dropdown('ins_localidad', $lista_localidades, "", "class='custom-select'"); ?>
+                                <?php echo form_dropdown('ins_localidad', $lista_localidades, "", "class='custom-select' required"); ?>
                             </div>
                         </div>
 
