@@ -59,6 +59,10 @@ class modelAportaciones extends CI_Model{
     public function update($id, $kg, $variedad, $localidad, $eco, $fecha, $dni){
         $query = $this->db->query("DELETE FROM aportacion WHERE id = '$id'");
         $query = $this->db->query("INSERT INTO aportacion (id, id_proveedor, kilos , id_variedad, id_localidad, eco, fecha) VALUES ($id, '$dni', '$kg', '$variedad', '$localidad', $eco, '$fecha');");
+        $query = $this->db->query("DELETE FROM aceite WHERE id_aportacion = '$id'");
+
+        $query = $this->db->query("INSERT INTO aceite (id, id_aportacion, litros, acidez) VALUES (null, '$id_aportacion', '$litros', '$acidez');"); 
+
         return $this->db->affected_rows();
 
     }
