@@ -2,7 +2,33 @@
         $(document).ready(function() {
             $('#enlace_usuarios').toggleClass('active');
             
-            $(document).on("click",'#update_button', function(){
+            $('#tabla_usuarios').DataTable({
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando de _START_ - _END_ de _TOTAL_ entrada(s).",
+            "emptyTable": "No hay datos disponibles",
+            "infoEmpty":      "",
+            "loadingRecords": "Cargando...",
+            "processing":     "Procesando petición...",
+            "zeroRecords":    "No se encuentran coincidencias",
+            "lengthMenu":     "Mostrar _MENU_ entradas",
+            "paginate": {
+                "first":      "<<",
+                "last":       ">>",
+                "next":       ">",
+                "previous":   "<"
+            },
+        }
+    });
+    
+        // Establecemos un placeholder para el buscador.
+        $("input[type='search']").attr('placeholder','Buscar Usuario');
+        $("select[name='tabla_usuarios_length']").addClass("form-control form-control-sm");
+        // Añadimos la clase form-control para que el buscador tenga el aspecto de bootstrap.
+        $("input[type='search']").addClass('form-control');
+    
+
+            $(document).on("click",'#btn_update', function(){
                 $("#submitUsuMod").prop("disabled", true);
                 $(".msg").html("");
                  id  = $(this).data('id');
@@ -96,15 +122,15 @@
 
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-hover">
+                <table id='tabla_usuarios' class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Usuario</th>
-                            <th scope="col">Contraseña</th>
                             <th scope="col">Nivel</th>
                             <th scope="col">Modificar</th>
                             <th scope="col">Eliminar</th>
+                            <th class="d-none"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,7 +141,6 @@
                     echo ("<tr>");
                     echo ("<td class='fila".$usuario["id"]."'>".$usuario["id"]."</td>");
                     echo ("<td id='user_".$usuario["id"]."' class='fila".$usuario["id"]."'>".$usuario["username"]."</td>");
-                    echo ("<td>*************</td>");
                     if ($usuario["nivel"] == 2){
                         echo ("<td class='fila".$usuario["id"]."'> Administrador </td>");
                     } else {
@@ -124,10 +149,10 @@
                     echo ("<td id='nivel_".$usuario["id"]."'class='d-none fila".$usuario["id"]."'>".$usuario["nivel"]."</td>");
                     
                     echo ("<td>");
-                            echo anchor("Users/update_user/".$usuario['id'],"<span class='far fa-edit'></span>","  data-id='".$usuario['id']."' class='btn-update btn bg-transparent ' data-toggle='modal' id='update_button' data-target='#modal_mod'");
+                            echo anchor("Users/update_user/".$usuario['id'],"<span class='far fa-edit'></span>","  data-id='".$usuario['id']."'id='btn_update' class='btn-update btn bg-transparent ' data-toggle='modal'  data-target='#modal_mod'");
                     echo ("</td>");  
                     echo ("<td>");
-                            echo anchor("Users/delete_user/".$usuario['id'],"<span class='fas fa-trash-alt text-danger'></span>","class='btn bg-transparent  '");
+                    echo anchor("Users/delete_user/".$usuario['id'],"<span class='fas fa-trash-alt text-danger'></span>","id='btn_delete' class='btn bg-transparent'");
                     echo ("</td>");
                     echo ("</tr>");
                 }
@@ -142,7 +167,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">Insertar Usuario</h5>
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Insertar usuario</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

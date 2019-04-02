@@ -113,10 +113,10 @@
         $("input[type='search']").addClass('form-control');
     
     
-
-    
-
     $(document).on('click',"#btn_update", function(){
+        element = $("#upd_dni")[0];
+        element.setCustomValidity('');
+
         id = $(this).data('id');
         var nombre = $('#nombre_'+id).text();
         var apellido1 = $('#apellido1_'+id).text();
@@ -136,7 +136,8 @@
         $("#ins_aportacion").trigger('reset');
         $('#modal_insert_aportacion').modal('toggle');
        var id = $(this).data('id');
-       $('#prov_id').val(id);
+       var dni = $('#dni_'+id).text();
+       $('#prov_id').val(dni);
        var nombre = $('#nombre_'+id).text();
        var apellido1 = $('#apellido1_'+id).text();
        var apellido2 = $('#apellido2_'+id).text();
@@ -187,7 +188,6 @@
     <div class="row">
             <div class="col-md-12 botones">
                 <button type="button" id="btn_insert" class="btn btn-primary" data-toggle="modal" data-target="#modal_insert"> Insertar Proveedor </button>        
-                <?php echo anchor('Aportaciones/index/','Historial de aportaciones',' class="btn btn-primary"'); ?>
             </div>
     </div>
 
@@ -208,6 +208,7 @@
                     </thead>
                     <tbody>
                     <?php
+                  
                         for($i = 0; $i < count($lista_proveedores);$i++){
                             $proveedor = $lista_proveedores[$i];
                             echo ("<tr>");
@@ -221,7 +222,7 @@
                             echo anchor("Proveedores/update/".$proveedor['id'],"<span class='far fa-edit'></span>","  data-id=".$proveedor['id']." id='btn_update' class='btn-update btn bg-transparent ' data-toggle='modal'  data-target='#modal_update'");
                             echo ("</td>");  
                             echo ("<td>");
-                            echo anchor("Proveedores/delete/".$proveedor['id'],"<span class='fas fa-trash-alt text-danger'></span>","class='btn bg-transparent'");
+                            echo anchor("Proveedores/delete/".$proveedor['id'],"<span class='fas fa-trash-alt text-danger'></span>","id='btn_delete' class='btn bg-transparent'");
                             echo ("</td>");
                             echo ("</tr>");
                         }
@@ -248,17 +249,17 @@
 
                         <div class='form-group'>
                             <label for='ins_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='Pepe' required />
+                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='' required />
                         </div>
                         
                         <div class='form-group'>
                             <label for='ins_apellido1'>Primer Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='Pérez' required />
+                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='' required />
                         </div>
 
                         <div class='form-group'>
                             <label for='ins_apellido2'>Segundo Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='García' required />                 
+                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='' required />                 
                         </div>
 
                         <div class='form-group'>
@@ -268,7 +269,7 @@
 
                         <div class='form-group'>
                             <label for='ins_telefono'>Teléfono</label>
-                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca su teléfono' name='ins_telefono' id='ins_telefono' value='123123123' required />                 
+                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca su teléfono' name='ins_telefono' id='ins_telefono' value='' required />                 
                         </div>
                     
                         <div class='modal-footer'>
@@ -299,7 +300,7 @@
                         
                         <div class='form-group'>
                             <label for='upd_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='upd_nombre' id='upd_nombre' required />
+                            <input type='text' class='form-control' placeholder='Introduzca un nombre' name='upd_nombre' id='upd_nombre' required />
                         </div>
                         
                         <div class='form-group'>
