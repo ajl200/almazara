@@ -11,12 +11,10 @@ CREATE TABLE proveedores (
     telf VARCHAR(9) NOT NULL
 );
 
-
-
 /* Las aportaciones de cada proveedor, por defecto el valor ecologico será false */
 CREATE TABLE aportacion (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_proveedor INT UNSIGNED NOT NULL,
+    id_proveedor VARCHAR(9) NOT NULL,
     id_variedad INT UNSIGNED NOT NULL,
     id_localidad INT UNSIGNED NOT NULL,
     kilos INT UNSIGNED NOT NULL,
