@@ -3,6 +3,22 @@
     height: 60px;
     margin: 10px;
 }
+/*
+html, body {
+    height: 100%;
+}
+
+#fondo_form {
+    background-color: rgba(211, 211, 211, 0.719);
+    border-radius: 20px;
+    padding: 40px;
+}
+
+body {
+    background: url('../img/bg.jpg') no-repeat center center;
+    background-size : cover;
+}
+*/
 
 .msg {
     padding: 5px;
@@ -27,6 +43,10 @@
     cursor: pointer;
 }
 
+td,th {
+    text-align: center;
+    vertical-align: middle !important;
+}
 
 .btn {
     margin-bottom: 40px;
@@ -44,6 +64,62 @@
     font-size: 30px;
 }
 
+.botones {
+    height: 40px;
+    margin-bottom: 30px;
+}
+
+#btn_update, #btn_delete {
+    display: block;
+    margin: 0 auto;
+}
+
+.fa-leaf {
+    color: green;
+}
+.fa-times{
+ color: gray;
+}
+
+.btn-primary , .active {
+    background-color: #88cc00 !important;
+    border-color: #7dbb00 !important;
+}
+
+.fa-trash-alt:hover  {
+    color: rgb(252, 4, 4) !important;
+}
+
+a {
+color: rgb(80, 56, 56);
+}
+
+.fa-edit{
+    color:  #0052bd;
+}
+
+.fa-edit:hover {
+    color:rgb(0, 138, 230);
+}
+
+a:hover {
+    background-color:#f5f4f4;
+    color: #7dbb00;
+}
+
+.fa-sign-out-alt{
+    color: gray;
+}
+
+
+
+.btn-primary:hover, .active:hover {
+    background-color: #7cb901 !important;
+    border-color: #7dbb00 !important;
+    
+}
+
+
 #favicon {
     width: 30px;
 }
@@ -51,12 +127,13 @@
 .success {
     color: green;
 }
-/*
+
+
 .form-control:focus {
-    border-color: blueviolet !important;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px blueviolet !important;
+    border-color: #95ff4f !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px  #95ff4f !important;
   }
-  */
+  
 #footer{
     position:relative;
     bottom:0;
