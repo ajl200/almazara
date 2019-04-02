@@ -3,7 +3,7 @@
 class modelAportaciones extends CI_Model{
 
     public function get_all(){
-        $query = $this->db->query("SELECT * FROM `aportacion` left join proveedores on aportacion.id_proveedor = proveedores.id inner join variedad on aportacion.id_variedad = variedad.id inner join localidad on aportacion.id_localidad = localidad.id;"); 
+        $query = $this->db->query("SELECT *,aportacion.id as id FROM `aportacion` left join proveedores on aportacion.id_proveedor = proveedores.id inner join variedad on aportacion.id_variedad = variedad.id inner join localidad on aportacion.id_localidad = localidad.id;"); 
         $data = array();
             if ($query->num_rows() > 0){
                 foreach ($query->result_array() as $row){
@@ -54,6 +54,13 @@ class modelAportaciones extends CI_Model{
     public function delete($id){
         $query = $this->db->query("DELETE FROM aportacion WHERE id = '$id'"); 
         return $this->db->affected_rows();
+    }
+
+    public function update($id, $kg, $variedad, $localidad, $eco, $fecha, $dni){
+        $query = $this->db->query("DELETE FROM aportacion WHERE id = '$id'");
+        $query = $this->db->query("INSERT INTO aportacion (id, id_proveedor, kilos , id_variedad, id_localidad, eco, fecha) VALUES ($id, '$dni', '$kg', '$variedad', '$localidad', $eco, '$fecha');");
+        return $this->db->affected_rows();
+
     }
 
 } 
