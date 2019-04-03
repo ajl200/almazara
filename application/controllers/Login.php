@@ -24,7 +24,9 @@ class Login extends CI_Controller {
         $data["noHeader"] = false;
         $data["viewName"] = "login";
         $this->modelSecurity->destroy_session();
+        $data["viewName"] = "login";
         $this->load->view('template',$data);
+
     }
 // ------- CARGO LA VISTA DEL LOGIN POR DEFECTO ------------ //
 
