@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="<?php echo base_url()?>/assets/style/login.css" />
+
 <div class="container-fluid" id="login"> 
 <div class='box'>
         <?php
