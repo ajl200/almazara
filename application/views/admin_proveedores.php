@@ -9,7 +9,10 @@
         var abecedario = 'TRWAGMYFPDXBNJZSQVHLCKE';
         var dni_length = dni.length;
         var acum = "";
-        dni_def = $('#dni_'+id).text();
+        if (opc == 'upd'){
+            dni_def = $('#dni_'+id).text();
+        }
+        
         // -1 sin la letra:
         for( i = 0; i < dni_length -1 ; i++){
             var n = dni.charAt(i);
@@ -19,21 +22,25 @@
         var letra = abecedario.charAt(parseInt(acum % 23));
         console.log(letra , letra_input);
     if (letra != letra_input){
+        console.log('validar_ajax faaaaaaaaaaaaaalse');
             $("#submit_insert").prop("disabled", true);
             element.setCustomValidity('Introduzca un DNI válido.');
     } else {
-        if (opc == 'ins'){   
+        if (opc == 'ins'){ 
+            console.log('validar_ajax true');  
         // Si vamos a insertar y la letra es = al input realizará la validación de ajax.          
         validar_ajax = true;
         // Si vamos a modificar y la letra es = al input y el dni no ha sido modificado no hará la validacion por ajax. 
         // Si es distinta si hará la comprobación del nuevo dni
     } else {
         if (dni == dni_def){
+            console.log('validar_ajax false');
         validar_ajax = false;
         $("#submit_insert").prop("disabled", false);
         element.setCustomValidity('');
     } else {
         validar_ajax = true;
+        console.log('validar_ajax true2');
     }
     }
     }
@@ -44,6 +51,7 @@
     $("#ins_dni").on('change', function(e){
         validar_dni('ins');
         if(validar_ajax){  
+
             a();
             e.preventDefault(); 
         }
@@ -180,6 +188,9 @@
                     case 1:
                         echo "<div class='alert alert-danger' role='alert'> Se ha producido un error.</div>";  
                         break;
+                    case 3:
+                        echo "<div class='alert alert-danger' role='alert'> La bodega está llena.</div>";  
+                        break;
                 }
             }
         ?>
@@ -238,7 +249,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">Insertar Proveedor</h5>
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Insertar Proveedor/a</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -362,7 +373,7 @@
 
                         <div class='form-group'>
                             <label for='ins_aportacion_kg'>Kilogramos: </label>
-                            <input type='number' min='1' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' required />
+                            <?php echo "<input type='number' min='1' max='$capacidad' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' required />"?> 
                         </div>
 
                         <div class='form-group'>
