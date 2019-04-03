@@ -36,10 +36,12 @@ CREATE TABLE variedad (
 /* Un bidon solo puede almacenar una variedad de aceite */
 CREATE TABLE bidon (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    litros_max INT UNSIGNED NOT NULL,
-    litros_almacenados INT UNSIGNED NOT NULL,
-    id_variedad TINYINT UNSIGNED NOT NULL
+    litros_max INT UNSIGNED NOT NULL DEFAULT 550000,
+    litros_almacenados INT UNSIGNED NOT NULL DEFAULT 0,
+    id_variedad TINYINT UNSIGNED
 );
+
+INSERT INTO bidon VALUES (null, 55000,0,NULL),(null, 55000,0,NULL),(null, 55000,0,NULL),(null, 55000,0,NULL);
 
 /* Una tolva solo puede almacenar una variedad de aceituna 
 CREATE TABLE tolva (
