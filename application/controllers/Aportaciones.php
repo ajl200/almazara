@@ -9,7 +9,7 @@ class Aportaciones extends Security {
         $data['lista_variedades'] = $this->modelProveedores->get_variedades();
         $data['lista_localidades'] = $this->modelProveedores->get_localidades();
         $data['lista_aportaciones'] = $this->modelAportaciones->get_all();
-
+    
         if ($this->session->flashdata('data') != null){
             $a = $this->session->flashdata('data');
             $data['msg'] = $a['msg'];
@@ -28,14 +28,17 @@ class Aportaciones extends Security {
         if ($eco == null){
             $eco = 0;
         }
-        
-        $r = $this->modelAportaciones->insert($id_prov, $kg, $variedad, $localidad, $eco, $fecha);
-        $id_aportacion = $this->modelAportaciones->get_next_id();
-        $r2 = $this->modelAportaciones->producir_aceite($id_aportacion);
-        
-        if ($r == 0) {
+        $id_aportacion = $this->modelAportaciones->get_next_id('aportacion');
+        $id_aceite = $this->modelAportaciones->get_next_id('aceite');
+        $r = $this->modelAportaciones->insert($id_prov, $kg, $variedad, $localidad, $eco, $fecha,$id_aportacion,$id_aceite);
+
+        if ($r == 0 || $r == 2 ) {
             //error
-            $data["msg"] = "1";
+            if ($r == 2){
+                $data["msg"] = "3";
+            } else {
+                $data["msg"] = "1";
+            }
             $this->session->set_flashdata('data',$data);
             redirect('Proveedores/index');
         } else {
@@ -47,7 +50,7 @@ class Aportaciones extends Security {
     }
 
     public function update (){
-        $id = $this->input->get_post('upd_aportacion_id'); 
+        $id_aportacion = $this->input->get_post('upd_aportacion_id'); 
         $kg = $this->input->get_post('upd_aportacion_kg'); 
         $variedad = $this->input->get_post('upd_variedad'); 
         $localidad = $this->input->get_post('upd_localidad'); 
@@ -55,13 +58,16 @@ class Aportaciones extends Security {
         $fecha = $this->input->get_post('upd_aportacion_fecha');
         $dni = $this->input->get_post('upd_dni');
         
+        //OBTENER EL ID DEL PROVEEDOR, ID_ACEITE DE ESA APORTACION.
+        
         if ($eco == null){
             $eco = 0;
         } else {
             $eco = 1;
         }
         
-        $r = $this->modelAportaciones->update($id, $kg, $variedad, $localidad, $eco, $fecha, $dni);
+        $r = $this->modelAportaciones->delete_aceite_en_bidon($id_aceite);
+        $r = $this->modelAportaciones->insert($id_prov, $kg, $variedad, $localidad, $eco, $fecha, $id_aportacion, $id_aceite);
 
         if ($r == 0) {
             //error

@@ -34,7 +34,8 @@
         var eco = $('#eco_'+id).text(); // eco = 1
         var dni = $('#dni_'+id).text();
         var fecha = $('#fecha_'+id).text();
-
+        var id_aceite = $('#id_aceite_'+id).text();
+        var id_proveedor = $('#id_aceite_'+id).text();
             console.log(variedad, localidad, eco);
         $('#upd_aportacion_id').val(id); 
         $('#upd_aportacion_kg').val(kilos); 
@@ -93,10 +94,13 @@
                             <th class='d-none'></th>
                             <th class='d-none'></th>
                             <th class='d-none'></th>
+                            <th class='d-none'></th>
+                            <th class='d-none'></th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php
+                    var_dump($lista_aportaciones);
                         for($i = 0; $i < count($lista_aportaciones);$i++){
                             $aport = $lista_aportaciones[$i];
                             echo ("<tr>");
@@ -107,7 +111,9 @@
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_localidad_".$aport["id"]."'>".$aport["id_localidad"]."</td>");
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_variedad_".$aport["id"]."'>".$aport["id_variedad"]."</td>");
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='eco_".$aport["id"]."'>".$aport["eco"]."</td>");
-                            echo ("<td  data-id=".$aport["id"]." id='dni_".$aport["id"]."'>".$aport["id_proveedor"]."</td>");
+                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='proveedor_".$aport["id"]."'>".$aport["id_proveedor"]."</td>");
+                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='aceite_".$aport["id"]."'>".$aport["id_aceite"]."</td>");
+                            echo ("<td  data-id=".$aport["id"]." id='dni_".$aport["id"]."'>".$aport["dni"]."</td>");
                             echo ("<td data-id=".$aport["id"]." id='fecha_".$aport["id"]."'>".$aport["fecha"]."</td>");
                             if ($aport["eco"] == 1){
                                 echo ("<td  data-id=".$aport["id"]."><span class='fas fa-leaf'></span></td>");
