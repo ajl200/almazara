@@ -8,6 +8,8 @@ class Proveedores extends Security {
         $data['lista_proveedores'] = $this->modelProveedores->get_all();
         $data['lista_variedades'] = $this->modelProveedores->get_variedades();
         $data['lista_localidades'] = $this->modelProveedores->get_localidades();
+        $data['capacidad'] = $this->modelAportaciones->get_capacidad_bidones();
+
         $data["viewName"] = "admin_proveedores";
         
 
