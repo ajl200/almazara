@@ -20,6 +20,10 @@ body {
 }
 */
 
+.container-fluid {
+    min-height: 90vh;
+}
+
 .msg {
     padding: 5px;
     margin: 5px;
@@ -39,8 +43,13 @@ body {
     margin: 20px;
 }
 
-.tt:hover {
+.tt:hover , .fa-copy {
     cursor: pointer;
+}
+
+.fa-copy {
+    color: gray;
+    font-size: 20px !important;
 }
 
 td,th {
@@ -111,14 +120,16 @@ a:hover {
     color: gray;
 }
 
+#enlacegit {
+    background-color: white;
 
+}
 
 .btn-primary:hover, .active:hover {
     background-color: #7cb901 !important;
     border-color: #7dbb00 !important;
     
 }
-
 
 #favicon {
     width: 30px;
@@ -127,16 +138,12 @@ a:hover {
 .success {
     color: green;
 }
-
+.fa-address-book{
+    font-size: 20px;
+}
 
 .form-control:focus {
     border-color: #95ff4f !important;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px  #95ff4f !important;
   }
-  
-#footer{
-    position:relative;
-    bottom:0;
-    margin: 20px;
-}
-  
+

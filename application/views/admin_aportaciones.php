@@ -36,7 +36,9 @@
         var fecha = $('#fecha_'+id).text();
         var id_aceite = $('#id_aceite_'+id).text();
         var id_proveedor = $('#id_aceite_'+id).text();
-            console.log(variedad, localidad, eco);
+            
+        console.log(id_aceite, id_proveedor, id);
+
         $('#upd_aportacion_id').val(id); 
         $('#upd_aportacion_kg').val(kilos); 
         if (eco == 1){
@@ -50,13 +52,14 @@
         $('#upd_variedad').val(variedad);
         $('#upd_localidad').val(localidad); 
         $('#upd_dni').val(dni); 
+        $('#upd_aceite_id').val(id_aceite); 
+        $('#upd_proveedor_id').val(id_proveedor); 
           
     });
 
     });
 </script>
 
-<div class="container-fluid">
     <div class='box'>
         <?php
             if (isset($msg)){
@@ -100,7 +103,6 @@
                     </thead>
                     <tbody>
                     <?php
-                    var_dump($lista_aportaciones);
                         for($i = 0; $i < count($lista_aportaciones);$i++){
                             $aport = $lista_aportaciones[$i];
                             echo ("<tr>");
@@ -111,8 +113,8 @@
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_localidad_".$aport["id"]."'>".$aport["id_localidad"]."</td>");
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_variedad_".$aport["id"]."'>".$aport["id_variedad"]."</td>");
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='eco_".$aport["id"]."'>".$aport["eco"]."</td>");
-                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='proveedor_".$aport["id"]."'>".$aport["id_proveedor"]."</td>");
-                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='aceite_".$aport["id"]."'>".$aport["id_aceite"]."</td>");
+                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_proveedor_".$aport["id"]."'>".$aport["id_proveedor"]."</td>");
+                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_aceite_".$aport["id"]."'>".$aport["id_aceite"]."</td>");
                             echo ("<td  data-id=".$aport["id"]." id='dni_".$aport["id"]."'>".$aport["dni"]."</td>");
                             echo ("<td data-id=".$aport["id"]." id='fecha_".$aport["id"]."'>".$aport["fecha"]."</td>");
                             if ($aport["eco"] == 1){
@@ -124,7 +126,7 @@
                             echo anchor("Aportaciones/update/".$aport['id'],"<span class='far fa-edit'></span>","  data-id=".$aport['id']." id='btn_update' class='btn-update btn bg-transparent ' data-toggle='modal'  data-target='#modal_update'");
                             echo ("</td>");  
                             echo ("<td>");
-                            echo anchor("Aportaciones/delete/".$aport['id'],"<span class='fas fa-trash-alt text-danger'></span>","id='btn_delete' class='btn bg-transparent'");
+                            echo anchor("Aportaciones/delete/".$aport['id']."/".$aport['id_aceite'],"<span class='fas fa-trash-alt text-danger'></span>","id='btn_delete' class='btn bg-transparent'");
                             echo ("</td>");
                             echo ("</tr>");
                         }
@@ -147,6 +149,8 @@
                         <!-- ****************** CUERPO DEL CUADRO MODAL INSERT *********************** -->
                         <?php echo form_open_multipart('Aportaciones/update','id="upd_aportacion" class="ui-filterable"'); ?>
                         <input type='hidden' class='form-control' value='' name='upd_aportacion_id' id='upd_aportacion_id' required/>
+                        <input type='hidden' class='form-control' value='' name='upd_aceite_id' id='upd_aceite_id' required/>
+                        <input type='hidden' class='form-control' value='' name='upd_proveedor_id' id='upd_proveedor_id' required/>
 
                         <div class='form-group'>
                             <label for='upd_aportacion_fecha'>Fecha: </label>
@@ -201,4 +205,4 @@
                 </div> <!-- cierra el modal body -->
             </div>
         </div> <!-- modal_insert -->
-</div>
+

@@ -5,7 +5,7 @@
                 $this->load->model('modelUser');
                 $this->load->model('modelProveedores');
                 $this->load->model('modelAportaciones');
-                
+                $this->load->model('modelBodega');
                 if (isset($this->session->userdata['loguedIn'])) {
                     
                 } else {

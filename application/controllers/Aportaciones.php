@@ -57,7 +57,9 @@ class Aportaciones extends Security {
         $eco = $this->input->get_post('upd_cb_eco'); 
         $fecha = $this->input->get_post('upd_aportacion_fecha');
         $dni = $this->input->get_post('upd_dni');
-        
+
+        $id_aceite = $this->input->get_post('upd_aceite_id'); 
+        $id_proveedor = $this->input->get_post('upd_proveedor_id'); 
         //OBTENER EL ID DEL PROVEEDOR, ID_ACEITE DE ESA APORTACION.
         
         if ($eco == null){
@@ -66,8 +68,9 @@ class Aportaciones extends Security {
             $eco = 1;
         }
         
-        $r = $this->modelAportaciones->delete_aceite_en_bidon($id_aceite);
-        $r = $this->modelAportaciones->insert($id_prov, $kg, $variedad, $localidad, $eco, $fecha, $id_aportacion, $id_aceite);
+        // $r = $this->modelAportaciones->delete_aceite_en_bidon($id_aceite);
+        $r = $this->modelAportaciones->update($id_aportacion, $kg, $variedad, $localidad, $eco, $fecha, $dni, $id_aceite, $id_proveedor);
+        // $r = $this->modelAportaciones->insert($id_prov, $kg, $variedad, $localidad, $eco, $fecha, $id_aportacion, $id_aceite);
 
         if ($r == 0) {
             //error
@@ -82,8 +85,8 @@ class Aportaciones extends Security {
         }
     }
 
-    public function delete ($id) {
-        $r = $this->modelAportaciones->delete($id);
+    public function delete ($id, $id_aceite) {
+        $r = $this->modelAportaciones->delete($id , $id_aceite);
         if ($r == 0) {
             //error
             $data["msg"] = "1";

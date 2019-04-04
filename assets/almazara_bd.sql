@@ -3,7 +3,7 @@ CREATE DATABASE almazara;
 USE almazara;
 
 CREATE TABLE proveedores (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_proveedor INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL, 
     apellido1 VARCHAR(50) NOT NULL,
     apellido2 VARCHAR(50) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE proveedores (
 /* Las aportaciones de cada proveedor, por defecto el valor ecologico será false */
 CREATE TABLE aportacion (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_proveedor VARCHAR(9) NOT NULL,
+    dni_proveedor VARCHAR(9) NOT NULL,
     id_variedad INT UNSIGNED NOT NULL,
     id_localidad INT UNSIGNED NOT NULL,
     kilos INT UNSIGNED NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE bidon_almacena_aceite (
 
 /* Del aceite almacenamos la acidez *(una unica acidez), los litros, y la variedad */
 CREATE TABLE aceite (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_aceite INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_aportacion INT NOT NULL,
     litros INT UNSIGNED NOT NULL,
     acidez INT UNSIGNED NOT NULL

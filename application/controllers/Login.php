@@ -47,8 +47,8 @@ class Login extends CI_Controller {
             $id = $this->modelUser->get_id($name);
             $this->modelSecurity->create_session();
             $this->session->set_userdata("id", $id);
-            $data["viewName"] = "admin_panel";
-            $this->load->view('template',$data);
+            $this->session->set_flashdata('data',$data);
+            redirect('Proveedores/index');
         }
     }
 // ------- COMPRUEBO EL LOGIN REALIZADO -------------------- //

@@ -45,6 +45,17 @@
     }
     }
     }
+
+    function myFunction(id) {
+        console.log('llega2222');
+        var inpObj = document.getElementById(id);
+        if (!inpObj.checkValidity()) {
+            $("#msg").html(inpObj.validationMessage);
+        } else {
+            $("#msg").html("");
+        }
+    } 
+
     
     $(document).ready(function(){   
        
@@ -70,7 +81,7 @@
                     encode : true
                     })
                     .done(function(r) {
-                        console.log('llega ' + r );
+
                         if (r == 1 ){
                             $("#submit_insert").prop("disabled", true);
                             element.setCustomValidity('Ya se encuentra un usuario asociado a este DNI.');
@@ -92,6 +103,17 @@
             e.preventDefault(); 
         }
     });
+
+    
+
+    $("#ins_nombre").on('change', function(){
+        myFunction('ins_nombre');
+    });
+
+    
+
+    
+
 
     $("#enlace_proveedores").toggleClass('active');
 
@@ -143,14 +165,15 @@
     $(document).on('click','.tt', function(){
         $("#ins_aportacion").trigger('reset');
         $('#modal_insert_aportacion').modal('toggle');
-       var id = $(this).data('id');
+       id = $(this).data('id');
        var dni = $('#dni_'+id).text();
+       console.log(dni);
        $('#prov_id').val(dni);
        var nombre = $('#nombre_'+id).text();
        var apellido1 = $('#apellido1_'+id).text();
        var apellido2 = $('#apellido2_'+id).text();
+       $("#copy_dni").val(dni);
        $('#prov_nombre').val(nombre + " " + apellido1 + " " + apellido2);
-       ;
     });
 
     $("#btn_insert").on('click', function(){
@@ -174,10 +197,26 @@
             validar_dni(upd);
         }
     });
+
+    $('.fa-copy').click(function(){
+        /* Get the text field */
+        var txt = document.getElementById("copy_dni");
+        
+        /* Select the text field */
+        txt.select();
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        /* Alert the copied text */
+        $(this).tooltip('toggle');
+        $("#copy_dni").effect( "shake", { direction: "up", times: 4, distance: 4}, 500 );
+    });
+    
+    
+    
+
 });
 </script>
 
-<div class="container-fluid">
     <div class='box'>
         <?php
             if (isset($msg)){
@@ -223,17 +262,17 @@
                         for($i = 0; $i < count($lista_proveedores);$i++){
                             $proveedor = $lista_proveedores[$i];
                             echo ("<tr>");
-                            echo ("<td class='tt' data-id=".$proveedor["id"]." id='proveedor_".$proveedor["id"]."'>".$proveedor["id"]."</td>");
-                            echo ("<td class='tt' data-id=".$proveedor["id"]." id='nombre_".$proveedor["id"]."'>".$proveedor["nombre"]."</td>");
-                            echo ("<td class='tt' data-id=".$proveedor["id"]." id='apellido1_".$proveedor["id"]."'>".$proveedor["apellido1"]."</td>");
-                            echo ("<td class='tt' data-id=".$proveedor["id"]." id='apellido2_".$proveedor["id"]."'>".$proveedor["apellido2"]."</td>");
-                            echo ("<td class='tt' data-id=".$proveedor["id"]." id='dni_".$proveedor["id"]."'>".$proveedor["dni"]."</td>");
-                            echo ("<td class='tt' data-id=".$proveedor["id"]." id='telf_".$proveedor["id"]."'>".$proveedor["telf"]."</td>");
+                            echo ("<td class='tt' data-id=".$proveedor["id_proveedor"]." id='proveedor_".$proveedor["id_proveedor"]."'>".$proveedor["id_proveedor"]."</td>");
+                            echo ("<td class='tt' data-id=".$proveedor["id_proveedor"]." id='nombre_".$proveedor["id_proveedor"]."'>".$proveedor["nombre"]."</td>");
+                            echo ("<td class='tt' data-id=".$proveedor["id_proveedor"]." id='apellido1_".$proveedor["id_proveedor"]."'>".$proveedor["apellido1"]."</td>");
+                            echo ("<td class='tt' data-id=".$proveedor["id_proveedor"]." id='apellido2_".$proveedor["id_proveedor"]."'>".$proveedor["apellido2"]."</td>");
+                            echo ("<td class='tt' data-id=".$proveedor["id_proveedor"]." id='dni_".$proveedor["id_proveedor"]."'>".$proveedor["dni"]."</td>");
+                            echo ("<td class='tt' data-id=".$proveedor["id_proveedor"]." id='telf_".$proveedor["id_proveedor"]."'>".$proveedor["telf"]."</td>");
                             echo ("<td>");
-                            echo anchor("Proveedores/update/".$proveedor['id'],"<span class='far fa-edit'></span>","  data-id=".$proveedor['id']." id='btn_update' class='btn-update btn bg-transparent ' data-toggle='modal'  data-target='#modal_update'");
+                            echo anchor("Proveedores/update/".$proveedor["id_proveedor"],"<span class='far fa-edit'></span>","  data-id=".$proveedor["id_proveedor"]." id='btn_update' class='btn-update btn bg-transparent ' data-toggle='modal'  data-target='#modal_update'");
                             echo ("</td>");  
                             echo ("<td>");
-                            echo anchor("Proveedores/delete/".$proveedor['id'],"<span class='fas fa-trash-alt text-danger'></span>","id='btn_delete' class='btn bg-transparent'");
+                            echo anchor("Proveedores/delete/".$proveedor["id_proveedor"],"<span class='fas fa-trash-alt text-danger'></span>","id='btn_delete' class='btn bg-transparent'");
                             echo ("</td>");
                             echo ("</tr>");
                         }
@@ -260,17 +299,17 @@
 
                         <div class='form-group'>
                             <label for='ins_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='' required />
+                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='' pattern="[A-Za-z]+" required />
                         </div>
                         
                         <div class='form-group'>
                             <label for='ins_apellido1'>Primer Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='' required />
+                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='' pattern="[A-Za-z]+" required />
                         </div>
 
                         <div class='form-group'>
                             <label for='ins_apellido2'>Segundo Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='' required />                 
+                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='' pattern="[A-Za-z]+" required />                 
                         </div>
 
                         <div class='form-group'>
@@ -280,8 +319,10 @@
 
                         <div class='form-group'>
                             <label for='ins_telefono'>Teléfono</label>
-                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca su teléfono' name='ins_telefono' id='ins_telefono' value='' required />                 
+                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca su teléfono' name='ins_telefono' id='ins_telefono' value='' pattern="[0-9]{9}" required />                 
                         </div>
+
+                        <div id='msg'> </div>
                     
                         <div class='modal-footer'>
                             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
@@ -311,17 +352,17 @@
                         
                         <div class='form-group'>
                             <label for='upd_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduzca un nombre' name='upd_nombre' id='upd_nombre' required />
+                            <input type='text' class='form-control' placeholder='Introduzca un nombre' name='upd_nombre' id='upd_nombre' pattern="[A-Za-z]+" required />
                         </div>
                         
                         <div class='form-group'>
                             <label for='upd_apellido1'>Primer Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='upd_apellido1' id='upd_apellido1' required />
+                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='upd_apellido1' id='upd_apellido1' pattern="[A-Za-z]+" required />
                         </div>
 
                         <div class='form-group'>
                             <label for='upd_apellido2'>Segundo Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='upd_apellido2' id='upd_apellido2' required />                 
+                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='upd_apellido2' id='upd_apellido2' pattern="[A-Za-z]+" required />                 
                         </div>
 
                         <div class='form-group'>
@@ -331,7 +372,7 @@
 
                         <div class='form-group'>
                             <label for='upd_telf'>Teléfono</label>
-                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca su teléfono' name='upd_telefono' id='upd_telefono' required />                 
+                            <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca su teléfono' name='upd_telefono' id='upd_telefono' pattern="[0-9]{9}" required />                 
                         </div>
                     
                         <div class='modal-footer'>
@@ -372,8 +413,13 @@
                         </div>
 
                         <div class='form-group'>
+                            <label for='copy_dni'>DNI: <span class="fas fa-copy" data-toggle="tooltip" data-placement="top" title="Copiado al cortapapeles!" ></span> </label>
+                            <input type='text' class='form-control' value='' name='copy_dni' id='copy_dni'/>
+                        </div>
+
+                        <div class='form-group'>
                             <label for='ins_aportacion_kg'>Kilogramos: </label>
-                            <?php echo "<input type='number' min='1' max='$capacidad' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' required />"?> 
+                            <?php echo "<input type='number' min='1' max='$capacidad' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' pattern='[A-Za-z]+' required />"?> 
                         </div>
 
                         <div class='form-group'>
@@ -412,5 +458,5 @@
                 </div> <!-- cierra el modal body -->
             </div>
         </div> <!-- modal_insert -->
-</div>
+
 

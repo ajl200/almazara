@@ -18,6 +18,10 @@
     <!-- ESTILOS PROPIOS:-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>/assets/style/estilo.css" />
 
+    <script
+			  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+			  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+			  crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
 </head>
@@ -74,4 +78,4 @@
                 </nav>
             </div>
         </div>
-    </div>
+    
