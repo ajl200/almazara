@@ -299,17 +299,17 @@
 
                         <div class='form-group'>
                             <label for='ins_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='' pattern="[A-Za-z]+" required />
+                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
                         </div>
                         
                         <div class='form-group'>
                             <label for='ins_apellido1'>Primer Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='' pattern="[A-Za-z]+" required />
+                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
                         </div>
 
                         <div class='form-group'>
                             <label for='ins_apellido2'>Segundo Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='' pattern="[A-Za-z]+" required />                 
+                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />                 
                         </div>
 
                         <div class='form-group'>
@@ -352,17 +352,17 @@
                         
                         <div class='form-group'>
                             <label for='upd_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduzca un nombre' name='upd_nombre' id='upd_nombre' pattern="[A-Za-z]+" required />
+                            <input type='text' class='form-control' placeholder='Introduzca un nombre' name='upd_nombre' id='upd_nombre' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
                         </div>
                         
                         <div class='form-group'>
                             <label for='upd_apellido1'>Primer Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='upd_apellido1' id='upd_apellido1' pattern="[A-Za-z]+" required />
+                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='upd_apellido1' id='upd_apellido1' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
                         </div>
 
                         <div class='form-group'>
                             <label for='upd_apellido2'>Segundo Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='upd_apellido2' id='upd_apellido2' pattern="[A-Za-z]+" required />                 
+                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='upd_apellido2' id='upd_apellido2' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />                 
                         </div>
 
                         <div class='form-group'>
@@ -419,7 +419,7 @@
 
                         <div class='form-group'>
                             <label for='ins_aportacion_kg'>Kilogramos: </label>
-                            <?php echo "<input type='number' min='1' max='$capacidad' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' pattern='[A-Za-z]+' required />"?> 
+                            <?php echo "<input type='number' min='1' max='$capacidad' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' pattern='[A-Za-záéíóúÁÉÍÓÚñ]+' required />"?> 
                         </div>
 
                         <div class='form-group'>

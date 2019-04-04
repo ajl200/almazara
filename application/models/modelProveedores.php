@@ -50,14 +50,14 @@ class modelProveedores extends CI_Model {
 
 
     public function delete($id){
-        $query = $this->db->query("DELETE FROM proveedores WHERE id = '$id'"); 
+        $query = $this->db->query("DELETE FROM proveedores WHERE id_proveedor = '$id'"); 
         return $this->db->affected_rows();
     }
 
     public function update($id_proveedor,$nombre, $apellido1, $apellido2, $dni, $telf){
         $status = 0;
         $this->db->trans_start();
-        $query = $this->db->query("DELETE FROM proveedores WHERE id = '$id_proveedor'"); 
+        $query = $this->db->query("DELETE FROM proveedores WHERE id_proveedor = '$id_proveedor'"); 
         $query = $this->db->query("INSERT INTO proveedores (id_proveedor, nombre, apellido1, apellido2, dni, telf) VALUES ($id_proveedor,'$nombre', '$apellido1', '$apellido2', '$dni', $telf);"); 
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE){
