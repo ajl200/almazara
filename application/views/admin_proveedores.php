@@ -1,6 +1,4 @@
 <script>
-
-
         // VALIDACION DNI:
     function validar_dni (opc){
         validar_ajax = false;
@@ -20,43 +18,53 @@
         }
         var letra_input = dni.charAt(dni_length-1);
         var letra = abecedario.charAt(parseInt(acum % 23));
-        console.log(letra , letra_input);
     if (letra != letra_input){
-        console.log('validar_ajax faaaaaaaaaaaaaalse');
+        console.log('cambiasetcustom');
             $("#submit_insert").prop("disabled", true);
             element.setCustomValidity('Introduzca un DNI válido.');
     } else {
         if (opc == 'ins'){ 
-            console.log('validar_ajax true');  
         // Si vamos a insertar y la letra es = al input realizará la validación de ajax.          
         validar_ajax = true;
         // Si vamos a modificar y la letra es = al input y el dni no ha sido modificado no hará la validacion por ajax. 
         // Si es distinta si hará la comprobación del nuevo dni
     } else {
         if (dni == dni_def){
-            console.log('validar_ajax false');
         validar_ajax = false;
         $("#submit_insert").prop("disabled", false);
         element.setCustomValidity('');
     } else {
         validar_ajax = true;
-        console.log('validar_ajax true2');
     }
     }
     }
     }
 
-    function myFunction(id) {
-        console.log('llega2222');
+    function validar(id) {
         var inpObj = document.getElementById(id);
-        if (!inpObj.checkValidity()) {
-            $("#msg").html(inpObj.validationMessage);
+        console.log(inpObj.validity.patternMismatch);
+        $("#msg_"+id).css({'color':'red'});
+        if (inpObj.validity.patternMismatch) {
+            switch(id) {
+                case 'ins_nombre':
+                case 'ins_apellido1':
+                case 'ins_apellido2':
+                inpObj.setCustomValidity('No se admiten caracteres especiales.');
+                    break;
+                default: 
+            }
+            $("#"+id).effect( "shake", { direction: "up", times: 4, distance: 4}, 500 );
+        } else if(inpObj.validity.valueMissing) {
+            $("#"+id).effect( "shake", { direction: "up", times: 4, distance: 4}, 500 );
+            inpObj.setCustomValidity('Este campo debe ser completado.');
         } else {
-            $("#msg").html("");
+            inpObj.setCustomValidity("");
         }
-    } 
+    }
+
 
     
+
     $(document).ready(function(){   
        
     $("#ins_dni").on('change', function(e){
@@ -84,9 +92,10 @@
 
                         if (r == 1 ){
                             $("#submit_insert").prop("disabled", true);
+                            console.log('cambia de nuevo');
                             element.setCustomValidity('Ya se encuentra un usuario asociado a este DNI.');
+                            validar('ins_dni');
                         }else {
-                            console.log('DONE!');
                             $("#submit_insert").prop("disabled", false);
                             element.setCustomValidity('');
                         }
@@ -96,6 +105,20 @@
                             alert( "error" );
                         }); 
     }
+
+    $(document).on('change','input', function(){
+        
+
+        var id = $(this).attr('id');
+        var inpObj = document.getElementById(id);
+        if (id != 'ins_dni'){
+            validar(id);
+        }
+        console.log('llega');
+        $("#msg_"+id).html(inpObj.validationMessage);
+
+    });
+
     $("#upd_dni").on('change', function(e){
         validar_dni('upd');
         if(validar_ajax){
@@ -106,9 +129,7 @@
 
     
 
-    $("#ins_nombre").on('change', function(){
-        myFunction('ins_nombre');
-    });
+    
 
     
 
@@ -299,31 +320,34 @@
 
                         <div class='form-group'>
                             <label for='ins_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
+                            <input type='text' class='form-control' placeholder='Introduce un nombre' name='ins_nombre' id='ins_nombre' value='' pattern="[ A-Za-záéíóúÁÉÍÓÚñ]+" required />
+                            <div id='msg_ins_nombre'> </div>
                         </div>
                         
                         <div class='form-group'>
                             <label for='ins_apellido1'>Primer Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
+                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='ins_apellido1' id='ins_apellido1' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ ]+" required />
+                            <div id='msg_ins_apellido1'> </div>                
                         </div>
 
                         <div class='form-group'>
                             <label for='ins_apellido2'>Segundo Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />                 
+                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='ins_apellido2' id='ins_apellido2' value='' pattern="[A-Za-záéíóúÁÉÍÓÚñ ]+" required />                 
+                            <div id='msg_ins_apellido2'> </div>
                         </div>
 
                         <div class='form-group'>
                             <label for='ins_dni'>DNI</label>
                             <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca el DNI' name='ins_dni' id='ins_dni' value='' required />                 
+                            <div id='msg_ins_dni'> </div>
                         </div>
 
                         <div class='form-group'>
                             <label for='ins_telefono'>Teléfono</label>
                             <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca su teléfono' name='ins_telefono' id='ins_telefono' value='' pattern="[0-9]{9}" required />                 
+                            <div id='msg_ins_telefono'> </div>
                         </div>
 
-                        <div id='msg'> </div>
-                    
                         <div class='modal-footer'>
                             <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button>
                             <input type="submit" name="submit" id="submit_insert" value="Insertar Proveedor" class="btn btn-primary">
@@ -352,17 +376,17 @@
                         
                         <div class='form-group'>
                             <label for='upd_nombre'>Nombre</label>
-                            <input type='text' class='form-control' placeholder='Introduzca un nombre' name='upd_nombre' id='upd_nombre' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
+                            <input type='text' class='form-control' placeholder='Introduzca un nombre' name='upd_nombre' id='upd_nombre' pattern="[A-Za-záéíóúÁÉÍÓÚñ ]+" required />
                         </div>
                         
                         <div class='form-group'>
                             <label for='upd_apellido1'>Primer Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='upd_apellido1' id='upd_apellido1' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />
+                            <input type='text' class='form-control' placeholder='Introduzca el primer apellido' name='upd_apellido1' id='upd_apellido1' pattern="[A-Za-záéíóúÁÉÍÓÚñ ]+" required />
                         </div>
 
                         <div class='form-group'>
                             <label for='upd_apellido2'>Segundo Apellido</label>
-                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='upd_apellido2' id='upd_apellido2' pattern="[A-Za-záéíóúÁÉÍÓÚñ]+" required />                 
+                            <input type='text' class='form-control' placeholder='Introduzca el segundo apellido' name='upd_apellido2' id='upd_apellido2' pattern="[A-Za-záéíóúÁÉÍÓÚñ ]+" required />                 
                         </div>
 
                         <div class='form-group'>
@@ -419,7 +443,7 @@
 
                         <div class='form-group'>
                             <label for='ins_aportacion_kg'>Kilogramos: </label>
-                            <?php echo "<input type='number' min='1' max='$capacidad' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' pattern='[A-Za-záéíóúÁÉÍÓÚñ]+' required />"?> 
+                            <?php echo "<input type='number' min='1' max='$capacidad' class='form-control' placeholder='Kilogramos aportados' name='ins_aportacion_kg' id='ins_aportacion_kg' pattern='[A-Za-záéíóúÁÉÍÓÚñ ]+' required />"?> 
                         </div>
 
                         <div class='form-group'>
