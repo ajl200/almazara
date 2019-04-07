@@ -26,6 +26,17 @@ class modelAportaciones extends CI_Model{
         return $data;
     }
 
+    public function get_localidades(){
+        $query = $this->db->query(" SELECT localidad.localidad as City, sum(aportacion.kilos) as Cantidad, localidad.id as id from localidad inner join aportacion on localidad.id = aportacion.id_localidad group by aportacion.id_localidad;");
+            $data = array();
+            if ($query->num_rows() > 0){
+                foreach ($query->result_array() as $row){
+                    $data[] = $row;
+                }
+            }
+        return $data;
+    }
+
     public function get_last_id(){
         $query = $this->db->query("SELECT id from aportacion order by id desc limit 1");
         return $query;

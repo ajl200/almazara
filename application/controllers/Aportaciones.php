@@ -52,6 +52,8 @@ class Aportaciones extends Security {
         }
     }
 
+    
+
     public function update (){
         $id_aportacion = $this->input->get_post('upd_aportacion_id'); 
         $kg = $this->input->get_post('upd_aportacion_kg'); 

@@ -200,14 +200,6 @@
     });
 */
     
-
-    
-
-    
-
-    
-
-
     $("#enlace_proveedores").toggleClass('active');
 
     $('#tabla_proveedores').DataTable({
