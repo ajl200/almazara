@@ -1,5 +1,156 @@
 <script>
+
+    function validar_dni (opc){
+        validar_ajax = false;
+        dni = $("#"+opc+"_dni").val();
+        element = $("#"+opc+"_dni")[0];
+        var abecedario = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        var dni_length = dni.length;
+        var acum = "";
+        if (opc == 'upd'){
+            var dni_def = $('#dni_'+id).text();
+        }
+        
+        // -1 sin la letra:
+        for( i = 0; i < dni_length -1 ; i++){
+            var n = dni.charAt(i);
+            acum += n;
+        }
+
+        var letra_input = dni.charAt(dni_length-1);
+        var letra = abecedario.charAt(parseInt(acum % 23));
+
+        if (letra != letra_input){
+                $("#submit_insert").prop("disabled", true);
+                element.setCustomValidity('Introduzca un DNI válido. Formato: 00000000T ');
+        } else {
+            console.log(dni_def);
+                if (dni == dni_def){
+                validar_ajax = false;
+                $("#submit_update").prop("disabled", false);
+                element.setCustomValidity('');
+                } else {
+                    validar_ajax = true;
+                }
+            }
+        
+        return validar_ajax;
+    }
+
+    function validacion_ajax (){
+        var formData = {
+                        'dni' : dni
+                    };
+        $.ajax({
+                    type     : "POST",
+                    cache    : false,
+                    url      : "<?php echo base_url(); ?>index.php/Proveedores/validar_dni",
+                    data     : formData,
+                    dataType : 'json',
+                    encode : true,
+                    
+    complete: function () {
+      validar(input,inpObj); 
+     }
+                    })
+                    .done(function(r) {
+                        if (r == 1 ){
+                            $("#upd_aportacion").prop("disabled", false);
+                            element.setCustomValidity('');
+                        }else {
+                            $("#upd_aportacion").prop("disabled", true);
+                            element.setCustomValidity('No se encuentra ningún usuario asociado a ese DNI.');
+                        }
+                        })
+                        .fail(function(r) {
+                            console.log('error ' + r );
+                            alert( "error" );
+                        }); 
+    }
+    
+function validar(id,inpObj) {
+        /*console.log('valuemissing' + inpObj.validity.valueMissing);
+        console.log(inpObj.validity.typeMismatch);
+        console.log(inpObj.validity.patternMismatch);
+        console.log(inpObj.validity.tooLong);
+        console.log(inpObj.validity.tooShort);
+        console.log(inpObj.validity.rangeUnderflow);
+        console.log('badinput' + inpObj.validity.badInput);
+        console.log(inpObj.validity.valid);
+        console.log(inpObj.validity.validationMessage);
+*/
+           $("#msg_"+id).css({'color':'red'}); 
+            if (!inpObj.validity.valid) {
+             if(inpObj.validity.valueMissing && inpObj.validity.badInput ) {
+                                inpObj.setCustomValidity('Introduzca sólo valores numéricos.');
+
+                } else if(inpObj.validity.valueMissing) {
+                inpObj.setCustomValidity('Este campo debe ser completado correctamente.');
+                } else if (inpObj.validity.rangeOverflow){
+                inpObj.setCustomValidity('Aportación máxima: ' + capacidad + ' Kilogramos.');
+                }
+                $("#"+id).effect("shake", { direction: "up", times: 4, distance: 4}, 500 );                 
+        } 
+        $("#msg_"+id).html(inpObj.validationMessage);
+        inpObj.setCustomValidity('');
+    }
+
+
+
     $(document).ready(function(){   
+
+        $(document).on('change','input', function(e){
+        input = $(this).attr('id');
+        inpObj = document.getElementById(input);
+
+        if ( input == 'upd_dni' ){
+            var validar_ajax = validar_dni('upd');  
+            if(validar_ajax){  
+            validacion_ajax();
+            e.preventDefault(); 
+            return;
+            }
+        } 
+            validar(input,inpObj);
+        
+    });
+
+     $("#upd_variedad").on('change',function(){
+        capacidad_variedad();
+    });
+
+    $("#upd_cb_eco").on('change',function(){
+        capacidad_variedad();
+    });
+
+    $("#upd_aportacion_kg").on('change',function(){
+        capacidad_variedad();
+        
+    });
+
+    function capacidad_variedad (){
+        var variedad = $("#upd_variedad").val();
+        var eco = $("#upd_cb_eco").prop('checked');
+        if (eco){
+            capacidad = $("#capacidad_variedad_eco_"+variedad).val();
+        } else {
+            capacidad = $("#capacidad_variedad_"+variedad).val();
+        }
+
+        $("#upd_aportacion_kg").attr('max',capacidad);
+        var input_kg = $("#upd_aportacion_kg")[0];
+        validar('upd_aportacion_kg',input_kg);
+
+        if (capacidad == 0){
+            $("#upd_aportacion_kg").prop('disabled',true).effect("shake", { direction: "up", times: 4, distance: 4}, 500 );
+        } else {
+            $("#upd_aportacion_kg").prop('disabled',false);
+        }
+        
+}
+
+
+
     $("#enlace_aportaciones").toggleClass('active');
 
     $('#tabla_aportaciones').DataTable({
@@ -27,6 +178,7 @@
         $("input[type='search']").addClass('form-control');
 
         $(document).on('click',"#btn_update", function(){
+
         id = $(this).data('id');
         var kilos = $('#kilos_'+id).text();
         var variedad = $('#id_variedad_'+id).text();
@@ -36,11 +188,10 @@
         var fecha = $('#fecha_'+id).text();
         var id_aceite = $('#id_aceite_'+id).text();
         var id_proveedor = $('#id_aceite_'+id).text();
-            
-        console.log(id_aceite, id_proveedor, id);
-
         $('#upd_aportacion_id').val(id); 
         $('#upd_aportacion_kg').val(kilos); 
+                            capacidad_variedad();
+
         if (eco == 1){
             
             $('#upd_cb_eco').prop('checked',true);
@@ -103,6 +254,7 @@
                     </thead>
                     <tbody>
                     <?php
+
                         for($i = 0; $i < count($lista_aportaciones);$i++){
                             $aport = $lista_aportaciones[$i];
                             echo ("<tr>");
@@ -113,9 +265,9 @@
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_localidad_".$aport["id"]."'>".$aport["id_localidad"]."</td>");
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_variedad_".$aport["id"]."'>".$aport["id_variedad"]."</td>");
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='eco_".$aport["id"]."'>".$aport["eco"]."</td>");
-                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_proveedor_".$aport["id"]."'>".$aport["id_proveedor"]."</td>");
+                            echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_proveedor_".$aport["id"]."'>".$aport["dni_proveedor"]."</td>");
                             echo ("<td  class='d-none' data-id=".$aport["id"]." id='id_aceite_".$aport["id"]."'>".$aport["id_aceite"]."</td>");
-                            echo ("<td  data-id=".$aport["id"]." id='dni_".$aport["id"]."'>".$aport["dni"]."</td>");
+                            echo ("<td  data-id=".$aport["id"]." id='dni_".$aport["id"]."'>".$aport["dni_proveedor"]."</td>");
                             echo ("<td data-id=".$aport["id"]." id='fecha_".$aport["id"]."'>".$aport["fecha"]."</td>");
                             if ($aport["eco"] == 1){
                                 echo ("<td  data-id=".$aport["id"]."><span class='fas fa-leaf'></span></td>");
@@ -155,12 +307,11 @@
                         <div class='form-group'>
                             <label for='upd_aportacion_fecha'>Fecha: </label>
                             <input type='date' class='form-control' value='' name='upd_aportacion_fecha' id='upd_aportacion_fecha' required/>
+                            <div class="msg_error" id='msg_upd_aportacion_fecha'> </div>
+
                         </div>
 
-                        <div class='form-group'>
-                            <label for='upd_aportacion_kg'>Kilogramos: </label>
-                            <input type='number' min='1' class='form-control' placeholder='Kilogramos aportados' name='upd_aportacion_kg' id='upd_aportacion_kg' required />
-                        </div>
+                       
 
                         <div class='form-group'>
                             <div class="input-group mb-3">
@@ -186,10 +337,34 @@
                                 <label class="form-check-label" for="upd_cb_eco"> Ecológica </label>
                             </div>
                         </div>
+
+                         <div class='form-group'>
+                            <label for='upd_aportacion_kg'>Kilogramos: </label>
+                            <span class='fas fa-question' value='' data-toggle='tooltip' data-placement='right' title='Los kilogramos a aportar están limitados en función a la capacidad de la bodega en el momento de la aportación.'></span>
+                           
+                           <input type='number' min='1' max='' class='form-control' placeholder='Kilogramos aportados' name='upd_aportacion_kg' id='upd_aportacion_kg' required />
+                           <div class="msg_error" id='msg_upd_aportacion_kg'> </div>
+
+                            <?php 
+                                for($i = 0; $i < count($capacidad); $i++){
+                                    $var = $capacidad[$i];
+
+                                    if ($var['eco'] == 0){
+                                        echo "<input id='capacidad_variedad_".$var['id_variedad']."' data-eco='".$var['eco']."' type='hidden' value='".$var['capacidad']."' id='capacidad_".$var['id_variedad']."' />";
+                                    }else {
+                                        echo "<input id='capacidad_variedad_eco_".$var['id_variedad']."' data-eco='".$var['eco']."' type='hidden' value='".$var['capacidad']."' id='capacidad_".$var['id_variedad']."' />";
+                                    }
+                                    
+                                }
+                            ?>
+
+                        </div>
+
                         
                         <div class='form-group'>
                             <label for='upd_dni'>Proveedor</label>
                             <input type='text' minlength="9" maxlength="9" class='form-control' placeholder='Introduzca el DNI' name='upd_dni' id='upd_dni' required />                 
+                            <div class="msg_error" id='msg_upd_dni'> </div>
                         </div>
 
                         <br><br><br><br><br><br><br>

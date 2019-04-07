@@ -43,15 +43,20 @@ body {
     margin: 20px;
 }
 
-.tt:hover , .fa-copy {
+.tt:hover , .fa-copy, .fa-question {
     cursor: pointer;
 }
 
 .fa-copy {
     color: gray;
-    font-size: 20px !important;
 }
 
+.fa-question , .fa-copy {
+font-size: 20px !important;
+}
+.msg_error{
+    color: red;
+}
 td,th {
     text-align: center;
     vertical-align: middle !important;

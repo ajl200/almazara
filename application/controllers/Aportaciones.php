@@ -6,6 +6,7 @@ class Aportaciones extends Security {
 
     public function index(){
         $data["viewName"] = "admin_aportaciones";
+        $data['capacidad'] = $this->modelAportaciones->get_capacidad_bidones();
         $data['lista_variedades'] = $this->modelProveedores->get_variedades();
         $data['lista_localidades'] = $this->modelProveedores->get_localidades();
         $data['lista_aportaciones'] = $this->modelAportaciones->get_all();
@@ -26,7 +27,9 @@ class Aportaciones extends Security {
         $eco = $this->input->get_post('cb_eco'); 
         $fecha = $this->input->get_post('prov_fecha');
         if ($eco == null){
-            $eco = 0;
+            $eco = '0';
+        } else {
+            $eco = '1';
         }
         $id_aportacion = $this->modelAportaciones->get_next_id('aportacion');
         $id_aceite = $this->modelAportaciones->get_next_id('aceite');
@@ -63,9 +66,9 @@ class Aportaciones extends Security {
         //OBTENER EL ID DEL PROVEEDOR, ID_ACEITE DE ESA APORTACION.
         
         if ($eco == null){
-            $eco = 0;
+            $eco = '0';
         } else {
-            $eco = 1;
+            $eco = '1';
         }
         
         // $r = $this->modelAportaciones->delete_aceite_en_bidon($id_aceite);

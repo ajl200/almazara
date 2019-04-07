@@ -18,7 +18,7 @@ CREATE TABLE aportacion (
     id_variedad INT UNSIGNED NOT NULL,
     id_localidad INT UNSIGNED NOT NULL,
     kilos INT UNSIGNED NOT NULL,
-    eco BOOLEAN not null,
+    eco VARCHAR(1) not null,
     fecha DATE not null
 );
 
@@ -38,10 +38,11 @@ CREATE TABLE bidon (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     litros_max INT UNSIGNED NOT NULL DEFAULT 550000,
     litros_almacenados INT UNSIGNED NOT NULL DEFAULT 0,
-    id_variedad TINYINT UNSIGNED
+    id_variedad TINYINT UNSIGNED NOT NULL,
+    eco VARCHAR(1) NOT NULL
 );
 
-INSERT INTO bidon VALUES (null, 55000,0,NULL),(null, 55000,0,NULL),(null, 55000,0,NULL),(null, 55000,0,NULL);
+INSERT INTO bidon VALUES (null, 55000,0,1,1),(null, 55000,0,1,0),(null, 55000,0,2,1),(null, 55000,0,2,0),(null, 55000,0,3,1),(null, 55000,0,3,0);
 
 /* Una tolva solo puede almacenar una variedad de aceituna 
 CREATE TABLE tolva (
@@ -64,7 +65,8 @@ CREATE TABLE aceite (
     id_aceite INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     id_aportacion INT NOT NULL,
     litros INT UNSIGNED NOT NULL,
-    acidez INT UNSIGNED NOT NULL
+    id_variedad TINYINT UNSIGNED NOT NULL,
+    eco VARCHAR(1) NOT NULL
 );
 
 CREATE TABLE usuarios (
@@ -91,12 +93,8 @@ CREATE TABLE variedad (
 
 INSERT INTO variedad (id, variedad) VALUES 
 (null,'Picual'),
-(null,'Arbequina'),(null,'Blanqueta'),
-(null,'Cornicabra'), 
-(null,'Royal'),(null,'Lechín de Sevilla'),
-(null,'Lechín de Granada'),
-(null,'Morisca'), (null,'Alfafara'),
-(null,'Verdial de Badajoz');
+(null,'Arbequina'),
+(null,'Blanqueta');
 
 
 INSERT INTO localidad (id, localidad) VALUES 

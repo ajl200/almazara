@@ -4,15 +4,20 @@ class modelAportaciones extends CI_Model{
 
     public function get_all(){
         // $query = $this->db->query("SELECT *,aportacion.id as id, aceite.id as id_aceite, proveedores.id as id_proveedor FROM `aportacion` left join proveedores on aportacion.id_proveedor = proveedores.dni inner join variedad on aportacion.id_variedad = variedad.id inner join localidad on aportacion.id_localidad = localidad.id inner join aceite on aportacion.id = aceite.id_aportacion;"); 
-        
+      /*  
         $query = $this->db->query(" SELECT *, aportacion.id as id FROM aportacion 
         left join proveedores on aportacion.dni_proveedor = proveedores.dni 
         inner join variedad on aportacion.id_variedad = variedad.id 
         inner join localidad on aportacion.id_localidad = localidad.id 
         inner join aceite on aportacion.id = aceite.id_aportacion");
+*/
+    $query = $this->db->query(" SELECT *, aportacion.id as id, aportacion.eco as eco FROM aportacion 
+        
+        inner join variedad on aportacion.id_variedad = variedad.id 
+        inner join localidad on aportacion.id_localidad = localidad.id 
+        inner join aceite on aportacion.id = aceite.id_aportacion");
 
-
-$data = array();
+            $data = array();
             if ($query->num_rows() > 0){
                 foreach ($query->result_array() as $row){
                     $data[] = $row;
@@ -38,8 +43,14 @@ $data = array();
     }
 
     public function get_capacidad_bidones(){
-        $query = $this->db->query("SELECT ( SUM(litros_max) - SUM(litros_almacenados) )*5 as capacidad from bidon");
-        return $query->result_array()[0]['capacidad'];
+        $query = $this->db->query("SELECT *,( SUM(litros_max) - SUM(litros_almacenados) )*5 as capacidad from bidon group by id_variedad, eco");
+        $data = array();
+            if ($query->num_rows() > 0){
+                foreach ($query->result_array() as $row){
+                    $data[] = $row;
+                }
+            }
+        return $data;
     }
 
     public function delete($id, $id_aceite){
@@ -97,11 +108,10 @@ $data = array();
                 }
         }
         $litros = round($data[0]['kilos'] / 5);
-        $acidez = 1;
-        $query = $this->db->query("INSERT INTO aceite (id_aceite, id_aportacion, litros, acidez) VALUES (null, '$id_aportacion', '$litros', '$acidez');"); 
+        $query = $this->db->query("INSERT INTO aceite (id_aceite, id_aportacion, litros, id_variedad, eco) VALUES (null, '$id_aportacion', '$litros', '$variedad', '$eco');"); 
 
         // Tercero se almacena.
-        $litros = $this->envasar($litros,$id_aceite);  // FUNCIONA PERO DICE QUE ESTA LLENA.
+        $litros = $this->envasar($litros, $id_aceite, $variedad, $eco);  
         
         
         // TRANSACCION COMPLETADA:
@@ -117,8 +127,8 @@ $data = array();
         }
         return $valid;
     }
-        public function envasar($litros, $id_aceite){
-            $query = $this->db->query("SELECT * from bidon");
+        public function envasar($litros, $id_aceite, $id_variedad, $eco){
+            $query = $this->db->query("SELECT bidon.id as id, bidon.litros_max as litros_max, bidon.litros_almacenados as litros_almacenados, bidon.id_variedad as id_variedad, bidon.eco as eco FROM bidon inner join variedad on bidon.id_variedad = variedad.id group by id_variedad, eco order by id asc");
             $data = array();
                 if ($query->num_rows() > 0){
                     foreach ($query->result_array() as $row){
@@ -129,13 +139,24 @@ $data = array();
             for ($i = 0; $i < count($data) ; $i++){
                 $bidon = $data[$i];
                 $id_bidon = $bidon['id'];
-                var_dump($id_bidon);
+                $variedad_bidon = $bidon['id_variedad'];
+                $bidon_eco = $bidon['eco'];
                 $capacidad = $bidon['litros_max'] - $bidon['litros_almacenados'];
+                
+                var_dump($id_variedad);
+                var_dump($variedad_bidon);
+
+                
+                var_dump($bidon_eco);
+                var_dump($eco);
+                         
+                 if (($id_variedad == $variedad_bidon) && ($bidon_eco == $eco)){
                     if ($capacidad > $litros){
                         $query = $this->db->query("INSERT INTO bidon_almacena_aceite (id_bidon, id_aceite, litros_almacenados) VALUES ('$id_bidon','$id_aceite', $litros);");
                         $litros_almacenados = $bidon['litros_almacenados'] + $litros;
                         $query = $this->db->query("UPDATE bidon SET litros_almacenados = '$litros_almacenados' WHERE id = '$id_bidon';");
                         $litros -= $litros;
+                       
                         break;
                     } else {
                         $litros = $litros - $capacidad;
@@ -143,13 +164,13 @@ $data = array();
                         $query = $this->db->query("INSERT INTO bidon_almacena_aceite (id_bidon, id_aceite, litros_almacenados) VALUES ('$id_bidon', '$id_aceite', $litros_almacenar);");
                         $litros_almacenados = $bidon['litros_almacenados'] + $litros_almacenar;
                         $query = $this->db->query("UPDATE bidon SET litros_almacenados = '$litros_almacenados' WHERE id = '$id_bidon';"); 
-
                         if ($litros == 0){
                             break;
                         }
                     }
-                }
-            return $litros;
+                } 
+        }
+        return $litros;
         }
     
 
@@ -158,7 +179,7 @@ $data = array();
         // COMIENZA LA TRANSACCION:
         $this->db->trans_start();
         // SACAR BIDON DONDE ESTAN  Y LITROS ALMACENADOS.
-        $query = $this->db->query("UPDATE aportacion SET dni_proveedor = '$dni', id_variedad = '$variedad', id_localidad = '$variedad', kilos = '$kg', eco = '$eco', fecha = '$fecha' where id = '$id_aportacion';"); 
+        $query = $this->db->query("UPDATE aportacion SET dni_proveedor = '$dni', id_variedad = '$variedad', id_localidad = '$variedad', kilos = '$kg', eco = $eco, fecha = '$fecha' where id = '$id_aportacion';"); 
         $litros = $kg / 5;
         $query = $this->db->query("UPDATE aceite SET litros = '$litros' where id_aportacion = '$id_aportacion';"); 
         // Borramos de bidon almacena aceite porque se tiene que hacer la comprobacion de la capacidad de bidones de nuevo.
@@ -178,7 +199,7 @@ $data = array();
             $litros_almacenados = $data[$i]['litros_almacenados'];
             $query = $this->db->query("UPDATE bidon SET litros_almacenados = (litros_almacenados - $litros_almacenados)  where id = $id_bidon;"); 
         }
-        $this->envasar($litros,$id_aceite);  // FUNCIONA PERO DICE QUE ESTA LLENA.
+        $this->envasar($litros, $id_aceite, $variedad, $eco);    // FUNCIONA PERO DICE QUE ESTA LLENA.
 
         $this->db->trans_complete();
         if (($this->db->trans_status() === FALSE)  ||  $litros != 0){
