@@ -76,6 +76,7 @@
                 if (isset($this->session->userdata["id"])) {
                     $id = $this->session->userdata["id"];
                     $nivel = $this->modelUser->getNivel($id);
+                    $path =  "<img src='".base_url("/assets/img/i.png")."' id='favicon'>";
                     if (isset($noHeader)) {
                         if ($noHeader == false) {
                         }
@@ -104,7 +105,7 @@
                     else {
                         // Administrador:
                         if ($nivel == 2) {
-                            $path =  "<img src='".base_url("/assets/img/i.png")."' id='favicon'>";
+                            
                             echo anchor('Proveedores/index/', $path,' class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Proveedores/index/','Proveedores',' id="enlace_proveedores" class="flex-sm-fill text-sm-center nav-link"');
                             echo anchor('Aportaciones/index/','Aportaciones',' id="enlace_aportaciones" class="flex-sm-fill text-sm-center nav-link"');

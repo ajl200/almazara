@@ -3,16 +3,9 @@
 </div> <!-- cierro container fluid -->
 <div id='footer'>
     <span class="text-center">&copy; Antonio Jiménez FCT Intermark </span>
-
-    
     <ul>
         </li><a id='enlacegit' href="https://github.com/ajl200"><span class="fab fa-github"></span> Antonio Jiménez </a></li>
     </ul>
-
-<div id="chart_div" style="width: 900px; height: 500px;"></div>
-
-
-
 </div>
 
 <!-- Optional JavaScript -->
