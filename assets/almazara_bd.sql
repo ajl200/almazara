@@ -100,20 +100,10 @@ INSERT INTO variedad (id, variedad) VALUES
 INSERT INTO localidad (id, localidad) VALUES 
 (null,'Albox'),
 (null,'Almería'),
-(null,'Antas'),
 (null,'Arboleas'),
-(null,'Bacares'),
-(null,'Benahadux'),
 (null,'Cantoria'),
 (null,'Chirivel'),
-(null,'El Ejido'),
-(null,'Los Gayardos'),
-(null,'Macael'),
-(null,'Oria'),
-(null,'Olula del Rio'),
-(null,'Sorbas'),
-(null,'Taberno'),
-(null,'Zurgena');
+(null,'El Ejido');
 
 
 

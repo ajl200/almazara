@@ -2,11 +2,8 @@
    $(document).ready(function (){
         $("#enlace_estadisticas").toggleClass('active');
         $(".alert").delay(4000).fadeOut();
-
-
     });
-var ar = <?php echo json_encode($localidades) ?>;
-console.log(ar[0]);
+
      google.charts.load('current', {
        'packages': ['geochart'],
        // Note: you will need to get a mapsApiKey for your project.
@@ -16,7 +13,22 @@ console.log(ar[0]);
      google.charts.setOnLoadCallback(drawMarkersMap);
 
     function drawMarkersMap() {
-      var data = google.visualization.arrayToDataTable(ar);
+
+      var data = google.visualization.arrayToDataTable([
+    ["City", "Cantidad"],
+
+  <?php
+    foreach ($localidades as $row) {
+  ?>
+
+    [<?="'".$row['city']."'"?>, <?=$row['cantidad']?>],
+
+  <?php
+    }
+  ?>
+
+  ]);
+  console.log(data);
 
       var options = {
         region: 'ES',
@@ -28,23 +40,43 @@ console.log(ar[0]);
       chart.draw(data, options);
     };
 </script>
+<div class="row">
+  <div class="col-md-1"> </div>
+  <div class="col-md-10"> 
+    <div id="chart_div"></div>
+  </div>
+  <div class="col-md-1"> </div>
+</div>
+<div class="row">
+            <div class="col-md-12 botones">
+                        
+            </div>
+    </div>
 
-<table id='tabla_proveedores' class="table table-hover ">
-                    <thead>
-                    </thead>
-                    <tbody>
-                    <?php
-                        for ($i = 0 ; $i < count($localidades) ; $i++){
-                            $localidad = $localidades[$i];
-                            echo ("<tr>");
-                            echo ("<td  data-id=".$localidad["id"]." id='id_".$localidad["id"]."'>".$localidad["id"]."</td>");
-                            echo ("<td  data-id=".$localidad["id"]." id='localidad_".$localidad["id"]."'>".$localidad["City"]."</td>");
-                            echo ("<td  data-id=".$localidad["id"]." id='cantidad_".$localidad["id"]."'>".$localidad["Cantidad"]."</td>");
-                            echo ("</tr>");
-                        }
-                    ?>
-                    </tbody>
-                </table>
+    <div class="row">
+            <div class="col-md-12">
+                <table id='tabla_proveedores' class="table table-hover ">
+                  <thead>
+                          <th scope="col">Ranking</th>
+                          <th scope="col">Localidad</th>
+                          <th scope="col">Cantidad Aportada</th>
+                  </thead>
+                  <tbody>
+                  <?php
+                      for ($i = 0 ; $i < count($localidades) ; $i++){
+                        $localidad = $localidades[$i];                         
+                          echo ("<tr>");
+                          $rank = $i+1;
+                          echo ("<td>".$rank."º</td>");
+                          echo ("<td  data-id=".$localidad["id"]." id='localidad_".$localidad["id"]."'>".$localidad["city"]."</td>");
+                          echo ("<td  data-id=".$localidad["id"]." id='cantidad_".$localidad["id"]."'>".$localidad["cantidad"]."</td>");
+                          echo ("</tr>");
+                      }
+                      
+                  ?>
+                  </tbody>
+              </table>
+            </div>
+      </div>
 
-                <div id="chart_div" style="width: 900px; height: 500px;"></div>
 
