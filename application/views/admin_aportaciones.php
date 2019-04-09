@@ -115,6 +115,11 @@ function validar(id,inpObj) {
         
     });
 
+    $('.fa-question').click(function(){
+                $(this).tooltip('toggle');
+
+    });
+
      $("#upd_variedad").on('change',function(){
         capacidad_variedad();
     });
@@ -133,8 +138,20 @@ function validar(id,inpObj) {
         var eco = $("#upd_cb_eco").prop('checked');
         if (eco){
             capacidad = $("#capacidad_variedad_eco_"+variedad).val();
+            if (capacidad == 0){
+            capacidad = kilos;
+            $("#upd_aportacion_kg").prop('disabled',true).effect("shake", { direction: "up", times: 4, distance: 4}, 500 );
+        } else {
+            $("#upd_aportacion_kg").prop('disabled',false);
+        }
         } else {
             capacidad = $("#capacidad_variedad_"+variedad).val();
+            if (capacidad == 0){
+            capacidad = kilos;
+            $("#upd_aportacion_kg").prop('disabled',true).effect("shake", { direction: "up", times: 4, distance: 4}, 500 );
+        } else {
+            $("#upd_aportacion_kg").prop('disabled',false);
+        }
         }
 
         $("#upd_aportacion_kg").attr('max',capacidad);
@@ -142,6 +159,7 @@ function validar(id,inpObj) {
         validar('upd_aportacion_kg',input_kg);
 
         if (capacidad == 0){
+            capacidad = kilos;
             $("#upd_aportacion_kg").prop('disabled',true).effect("shake", { direction: "up", times: 4, distance: 4}, 500 );
         } else {
             $("#upd_aportacion_kg").prop('disabled',false);
@@ -180,7 +198,7 @@ function validar(id,inpObj) {
         $(document).on('click',"#btn_update", function(){
 
         id = $(this).data('id');
-        var kilos = $('#kilos_'+id).text();
+        kilos = $('#kilos_'+id).text();
         var variedad = $('#id_variedad_'+id).text();
         var localidad = $('#id_localidad_'+id).text();
         var eco = $('#eco_'+id).text(); // eco = 1

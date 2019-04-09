@@ -43,7 +43,7 @@
     }
 
     function validar(id,inpObj) {
-        /*
+        console.log(id);
         console.log('valuemissing' + inpObj.validity.valueMissing);
         console.log(inpObj.validity.typeMismatch);
         console.log(inpObj.validity.patternMismatch);
@@ -53,10 +53,15 @@
         console.log('badinput' + inpObj.validity.badInput);
         console.log(inpObj.validity.valid);
         console.log(inpObj.validity.validationMessage);
-        */
+        
+
+
            $("#msg_"+id).css({'color':'red'}); 
             if (!inpObj.validity.valid) {
-                if (inpObj.validity.patternMismatch) {
+                if(inpObj.validity.valueMissing && inpObj.validity.badInput ) {
+                    inpObj.setCustomValidity('Introduzca sólo valores numéricos.');
+                    
+                }else if (inpObj.validity.patternMismatch) {
                     switch(id) {
                         case 'ins_nombre':
                         case 'ins_apellido1':
@@ -71,22 +76,16 @@
                         case 'upd_telefono':
                         inpObj.setCustomValidity('Debe introducir 9 valores numéricos.');
                         break;
-                        
                     }   
-                } else if(inpObj.validity.valueMissing && inpObj.validity.badInput ) {
-                                inpObj.setCustomValidity('Introduzca sólo valores numéricos.');
-
                 } else if(inpObj.validity.valueMissing) {
                 inpObj.setCustomValidity('Este campo debe ser completado correctamente.');
                 }  else if (inpObj.validity.rangeOverflow){
                 inpObj.setCustomValidity('Aportación máxima: ' + capacidad + ' Kilogramos.' );
-                } 
-                
-                
-                
-                 
-                $("#"+id).effect("shake", { direction: "up", times: 4, distance: 4}, 500 );                 
+                }
+                $("#"+id).effect("shake", { direction: "up", times: 4, distance: 4}, 500 );
         } 
+        console.log(inpObj.validationMessage);
+
         $("#msg_"+id).html(inpObj.validationMessage);
         inpObj.setCustomValidity('');
 
@@ -256,7 +255,7 @@
         capacidad_variedad();
     });
 
-    $("#ins_aportacion_kg").on('change',function(){
+    $("#ins_aportacion_kg").on('blur',function(){
         capacidad_variedad();
     });
 
@@ -271,25 +270,24 @@
 
         $("#ins_aportacion_kg").attr('max',capacidad);
         input_kg = $("#ins_aportacion_kg")[0];
+        
         validar('ins_aportacion_kg',input_kg);
 
         if (capacidad  == 0){
                 $("#btn_ins_aportacion").prop('disabled',true);
                 $("#ins_aportacion_kg").prop('disabled',true);
-                                input_kg.setCustomValidity('Bidones llenos');
-
+                $("#msg_ins_aportacion_kg").html('Capacidad máxima: No se admiten más aportaciones de esta variedad.');
                 } else {
-                    $("#btn_ins_aportacion").prop('disabled',false);
+                $("#btn_ins_aportacion").prop('disabled',false);
                 $("#ins_aportacion_kg").prop('disabled',false);
-                                input_kg.setCustomValidity('');
                 }
-
 }
 
         
 
     $(document).on('click','.tt', function(){
         $(".msg_error").html('');
+        capacidad_variedad();
         $("#ins_aportacion").trigger('reset');
         $('#modal_insert_aportacion').modal('toggle');
        id = $(this).data('id');

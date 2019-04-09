@@ -35,36 +35,6 @@
         $(".alert").delay(4000).fadeOut();
     });
 
-     google.charts.load('current', {
-       'packages': ['geochart'],
-       // Note: you will need to get a mapsApiKey for your project.
-       // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
-       
-     });
-     google.charts.setOnLoadCallback(drawMarkersMap);
-
-      function drawMarkersMap() {
-      var data = google.visualization.arrayToDataTable([
-        ['City',   'Population', 'Area'],
-        ['Almeria',      2761477,    1285.31],
-        ['Albox',      2761477,    1285.31],
-        ['El Ejido',      2761477,    1285.31],
-      ]);
-
-      var options = {
-        region: 'ES',
-        displayMode: 'markers',
-        colorAxis: {colors: ['green', 'blue']}
-      };
-
-      var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    };
-
-
-
-
-
 </script>
 
 <body>
