@@ -60,7 +60,6 @@
             if (!inpObj.validity.valid) {
                 if(inpObj.validity.valueMissing && inpObj.validity.badInput ) {
                     inpObj.setCustomValidity('Introduzca sólo valores numéricos.');
-                    
                 }else if (inpObj.validity.patternMismatch) {
                     switch(id) {
                         case 'ins_nombre':
@@ -88,7 +87,6 @@
 
         $("#msg_"+id).html(inpObj.validationMessage);
         inpObj.setCustomValidity('');
-
     }
 
     $(document).ready(function(){   

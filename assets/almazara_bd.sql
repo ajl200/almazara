@@ -18,7 +18,7 @@ CREATE TABLE aportacion (
     id_variedad INT UNSIGNED NOT NULL,
     id_localidad INT UNSIGNED NOT NULL,
     kilos INT UNSIGNED NOT NULL,
-    eco VARCHAR(1) not null,
+    eco BOOLEAN not null,
     fecha DATE not null
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE bidon (
     litros_max INT UNSIGNED NOT NULL DEFAULT 550000,
     litros_almacenados INT UNSIGNED NOT NULL DEFAULT 0,
     id_variedad TINYINT UNSIGNED NOT NULL,
-    eco VARCHAR(1) NOT NULL
+    eco BOOLEAN NOT NULL
 );
 
 INSERT INTO bidon VALUES (null, 55000,0,1,1),(null, 55000,0,1,0),(null, 55000,0,2,1),(null, 55000,0,2,0),(null, 55000,0,3,1),(null, 55000,0,3,0);
@@ -66,7 +66,7 @@ CREATE TABLE aceite (
     id_aportacion INT NOT NULL,
     litros INT UNSIGNED NOT NULL,
     id_variedad TINYINT UNSIGNED NOT NULL,
-    eco VARCHAR(1) NOT NULL
+    eco BOOLEAN NOT NULL
 );
 
 CREATE TABLE usuarios (
