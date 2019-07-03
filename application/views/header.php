@@ -26,7 +26,7 @@
 			  crossorigin="anonymous"></script>
 
 
-     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBWGgeZBxE6j7R8FUbWai2dZTgCil-AF4&callback=initMap"
+     <script async defer src="https://maps.googleapis.com/maps/api/js?key=##############################INSERTAR API KEY ###################&callback=initMap"
   type="text/javascript"></script> 
 </head>
 
